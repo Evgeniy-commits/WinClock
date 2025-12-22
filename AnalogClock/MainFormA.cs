@@ -43,30 +43,28 @@ namespace AnalogClock
 			int height = this.ClientSize.Height;
 			int centerX = width / 2;
 			int centerY = height / 2;
-			int radius = Math.Min(centerX, centerY) - 10;
+			int radius = Math.Min(centerX, centerY) - 20;
 
 			//Циферблат
 
-			g.FillEllipse(Brushes.Silver, centerX - radius, centerY - radius, radius * 2, radius * 2);
-			g.DrawEllipse(Pens.Black, centerX - radius, centerY - radius, radius * 2, radius * 2);
+			g.FillEllipse(Brushes.AliceBlue, centerX - radius, centerY - radius, radius * 2, radius * 2);
+			g.DrawEllipse(new Pen(Color.DarkBlue, 3), centerX - radius, centerY - radius, radius * 2, radius * 2);
 
 			// Деления
-			for (int i = 0; i < 12; i++)
+			for (int i = 0; i < 60; i++)
 			{ 
-				double angle = i * Math.PI / 6;
+				double angle = i * 6 * Math.PI / 180;
 
-				int x = (int)(centerX + radius * 0.85 * Math.Sin(angle));
-				int y = (int)(centerY - radius * 0.85 * Math.Cos(angle));
-				g.FillEllipse(Brushes.Black, x - 2, y - 2, 4, 4);
+				int x1 = (int)(centerX + (radius - 10) * Math.Sin(angle));
+				int y1 = (int)(centerY - (radius - 10) * Math.Cos(angle));
+				int x2 = (int)(centerX + radius * Math.Sin(angle));
+				int y2 = (int)(centerY - radius * Math.Cos(angle));
+				if (i % 5 == 0) // Часовые метки (жирные)
+					g.DrawLine(new Pen(Color.Blue, 3), x1, y1, x2, y2);
+				else // Минутные деления (тонкие)
+					g.DrawLine(new Pen(Color.DarkBlue, 1), x1, y1, x2, y2);
 			}
 
-			for (int i = 1; i <= 12; i++)
-			{
-				double angle = i * Math.PI / 6;
-				int x = (int)(centerX + radius * 0.9 * Math.Sin(angle));
-				int y = (int)(centerY - radius * 0.9 * Math.Cos(angle));
-				TextRenderer.DrawText(g, i.ToString(), this.Font, new Point(x - 5, y - 10), Color.Black);
-			}
 			//Углы стрелок
 			double secondAngle = (currentTime.Second + currentTime.Millisecond / 1000.0) * (2 * Math.PI / 60);
 			double minuteAngle = (currentTime.Minute + currentTime.Second / 60.0) * (2 * Math.PI / 60);
@@ -76,6 +74,11 @@ namespace AnalogClock
 			DrawHand(g, centerX, centerY, hourAngle, radius * 0.5, 6, Pens.Black);
 			DrawHand(g, centerX, centerY, minuteAngle, radius * 0.7, 4, Pens.DarkBlue);
 			DrawHand(g, centerX, centerY, secondAngle, radius * 0.8, 2, Pens.DarkMagenta);
+
+			DrawNumber(g, centerX, centerY, radius, "12", 0);
+			DrawNumber(g, centerX, centerY, radius, "3", 90);
+			DrawNumber(g, centerX, centerY, radius, "6", 180);
+			DrawNumber(g, centerX, centerY, radius, "9", 270);
 		}
 
 		private void DrawHand
@@ -92,6 +95,24 @@ namespace AnalogClock
 			// Утолщаем стрелку
 			Pen widePen = new Pen(pen.Color, 8);
 			g.DrawLine(widePen, centerX, centerY, x, y);
+		}
+
+
+		private void DrawNumber(Graphics g, int centerX, int centerY, int radius, string text, double angleDeg)
+		{
+			angleDeg -= 90; // Корректировка для вертикального положения
+			double angleRad = angleDeg * Math.PI / 180;
+
+			// Позиция цифры
+			int x = (int)(centerX + (radius * 0.9) * Math.Cos(angleRad));
+			int y = (int)(centerY + (radius * 0.9) * Math.Sin(angleRad));
+
+			// Тень
+			SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
+			g.DrawString(text, new Font("Arial", 14, FontStyle.Bold), shadowBrush, x - 2, y - 2);
+
+			// Основная цифра
+			g.DrawString(text, new Font("Arial", 14, FontStyle.Bold), Brushes.Black, x - 10, y - 10);
 		}
 	}
 }
