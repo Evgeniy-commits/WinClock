@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7E8AACF1-6064-455E-AFB1-F0E4DD3F9C0F}</ProjectGuid>
+    <ProjectGuid>{3D044DAB-03A2-43DB-A441-49C37EFD664A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AnalogClock</RootNamespace>
-    <AssemblyName>AnalogClock</AssemblyName>
+    <RootNamespace>ClockApplication</RootNamespace>
+    <AssemblyName>ClockApplication</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -52,16 +52,22 @@
     <Compile Include="AnalogClock.Designer.cs">
       <DependentUpon>AnalogClock.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainFormA.cs">
+    <Compile Include="DigitalClock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DigitalClock.Designer.cs">
+      <DependentUpon>DigitalClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="commonWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainFormA.Designer.cs">
-      <DependentUpon>MainFormA.cs</DependentUpon>
+    <Compile Include="commonWindow.Designer.cs">
+      <DependentUpon>commonWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainFormA.resx">
-      <DependentUpon>MainFormA.cs</DependentUpon>
+    <EmbeddedResource Include="commonWindow.resx">
+      <DependentUpon>commonWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -72,6 +78,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
