@@ -46,12 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalogClock.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AnalogClock.Designer.cs">
-      <DependentUpon>AnalogClock.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainFormA.cs">
       <SubType>Form</SubType>
     </Compile>

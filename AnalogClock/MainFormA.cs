@@ -19,8 +19,8 @@ namespace AnalogClock
 			InitializeComponent();
 			timerClock.Tick += TimerClock_Tick;
 			timerClock.Start();
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
+			//this.MaximizeBox = false;
+			//this.MinimizeBox = false;
 		}
 
 		private void TimerClock_Tick(object sender, EventArgs e)
