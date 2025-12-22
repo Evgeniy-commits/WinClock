@@ -26,7 +26,6 @@ namespace AnalogClock
 		private void TimerClock_Tick(object sender, EventArgs e)
 		{
 			currentTime = DateTime.Now;
-			// Перерисовываем 20 раз в секунду
 			this.Invalidate();
 		}
 
@@ -59,9 +58,9 @@ namespace AnalogClock
 				int y1 = (int)(centerY - (radius - 10) * Math.Cos(angle));
 				int x2 = (int)(centerX + radius * Math.Sin(angle));
 				int y2 = (int)(centerY - radius * Math.Cos(angle));
-				if (i % 5 == 0) // Часовые метки (жирные)
+				if (i % 5 == 0) 
 					g.DrawLine(new Pen(Color.Blue, 3), x1, y1, x2, y2);
-				else // Минутные деления (тонкие)
+				else 
 					g.DrawLine(new Pen(Color.DarkBlue, 1), x1, y1, x2, y2);
 			}
 
@@ -73,7 +72,7 @@ namespace AnalogClock
 			//Рисуем стрелки
 			DrawHand(g, centerX, centerY, hourAngle, radius * 0.5, 6, Pens.Black);
 			DrawHand(g, centerX, centerY, minuteAngle, radius * 0.7, 4, Pens.DarkBlue);
-			DrawHand(g, centerX, centerY, secondAngle, radius * 0.8, 2, Pens.DarkMagenta);
+			DrawHand(g, centerX, centerY, secondAngle, radius * 0.8, 2, Pens.Coral);
 
 			DrawNumber(g, centerX, centerY, radius, "12", 0);
 			DrawNumber(g, centerX, centerY, radius, "3", 90);
@@ -92,7 +91,7 @@ namespace AnalogClock
 			int x = (int)(centerX + length * Math.Sin(angle));
 			int y = (int)(centerY - length * Math.Cos(angle));
 
-			// Утолщаем стрелку
+			//стрелки толще 
 			Pen widePen = new Pen(pen.Color, 8);
 			g.DrawLine(widePen, centerX, centerY, x, y);
 		}
@@ -100,7 +99,7 @@ namespace AnalogClock
 
 		private void DrawNumber(Graphics g, int centerX, int centerY, int radius, string text, double angleDeg)
 		{
-			angleDeg -= 90; // Корректировка для вертикального положения
+			angleDeg -= 90; 
 			double angleRad = angleDeg * Math.PI / 180;
 
 			// Позиция цифры
