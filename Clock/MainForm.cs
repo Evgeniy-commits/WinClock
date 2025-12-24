@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 
 namespace Clock
@@ -27,6 +28,22 @@ namespace Clock
 			this.ShowInTaskbar = visible;
 			this.FormBorderStyle = visible ? FormBorderStyle.FixedSingle : FormBorderStyle.None;
 			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
+		}
+		System.Drawing.Color SetColor()
+		{
+			Color selectCol = default;
+			ColorDialog dialog = new ColorDialog();
+			if (dialog.ShowDialog() == DialogResult.OK)
+			{
+				selectCol = Color.FromArgb
+					(
+						dialog.Color.A,
+						dialog.Color.R,
+						dialog.Color.G,
+						dialog.Color.B
+					);
+			}
+			return selectCol;
 		}
 		private void timer_Tick(object sender, EventArgs e)
 		{
@@ -87,7 +104,14 @@ namespace Clock
 			tsmiShowWeekDay.Checked = cbShowWeekDay.Checked;
 
 		private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
-		
+
+		private void tsmiForegroundColor_Click(object sender, EventArgs e) =>
+			labelTime.BackColor = SetColor();
+
+		private void tsmiBackgroundColor_Click(object sender, EventArgs e)
+		{
+			this.BackColor = SetColor();
+		}
 	}
 }
 
