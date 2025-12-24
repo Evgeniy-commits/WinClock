@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +15,20 @@ namespace Clock
 {
 	public partial class MainForm : Form
 	{
+		private PrivateFontCollection _privateFonts = new PrivateFontCollection();
 		public MainForm()
 		{
 			InitializeComponent();
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			SetVisibility(false);
+			this.StartPosition = FormStartPosition.Manual;
+
+			Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;
+			this.Location = new Point(
+				workingArea.Right - this.Width - 50,
+				workingArea.Top + 50
+			);
 		}
 		void SetVisibility(bool visible)
 		{
@@ -111,6 +121,18 @@ namespace Clock
 		private void tsmiBackgroundColor_Click(object sender, EventArgs e)
 		{
 			this.BackColor = SetColor();
+		}
+
+		private void tsmiFont_Click(object sender, EventArgs e)
+		{
+			FontDialog fontDialog = new FontDialog();
+			
+			if (fontDialog.ShowDialog() == DialogResult.OK)
+			{
+
+				labelTime.Font = fontDialog.Font;
+				labelTime.ForeColor = fontDialog.Color;
+			}
 		}
 	}
 }

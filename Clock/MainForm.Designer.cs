@@ -56,6 +56,7 @@
 			this.btnHideControls = new System.Windows.Forms.Button();
 			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.colorDialog = new System.Windows.Forms.ColorDialog();
+			this.fontDialog = new System.Windows.Forms.FontDialog();
 			this.contextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -91,7 +92,7 @@
             this.toolStripSeparator6,
             this.tsmiQuit});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(181, 282);
+			this.contextMenuStrip.Size = new System.Drawing.Size(159, 260);
 			// 
 			// tsmiTopmost
 			// 
@@ -152,6 +153,7 @@
 			this.tsmiFont.Name = "tsmiFont";
 			this.tsmiFont.Size = new System.Drawing.Size(180, 22);
 			this.tsmiFont.Text = "Choose Font";
+			this.tsmiFont.Click += new System.EventHandler(this.tsmiFont_Click);
 			// 
 			// tsmiColor
 			// 
@@ -263,6 +265,10 @@
 			// 
 			this.colorDialog.FullOpen = true;
 			// 
+			// fontDialog
+			// 
+			this.fontDialog.ShowColor = true;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -314,6 +320,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
 		private System.Windows.Forms.ColorDialog colorDialog;
+		private System.Windows.Forms.FontDialog fontDialog;
 	}
 }
 
