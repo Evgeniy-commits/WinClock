@@ -199,6 +199,7 @@
 			this.tsmiAutoStart.Name = "tsmiAutoStart";
 			this.tsmiAutoStart.Size = new System.Drawing.Size(158, 22);
 			this.tsmiAutoStart.Text = "Auto Start";
+			this.tsmiAutoStart.CheckedChanged += new System.EventHandler(this.tsmiAutoStart_CheckedChanged);
 			// 
 			// toolStripSeparator6
 			// 
