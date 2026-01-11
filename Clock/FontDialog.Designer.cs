@@ -36,6 +36,7 @@
 			// 
 			// comboBoxFont
 			// 
+			this.comboBoxFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBoxFont.FormattingEnabled = true;
 			this.comboBoxFont.Location = new System.Drawing.Point(12, 12);
 			this.comboBoxFont.Name = "comboBoxFont";
@@ -82,7 +83,9 @@
 			this.Controls.Add(this.labelExample);
 			this.Controls.Add(this.comboBoxFont);
 			this.Name = "FontDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "FontDialog";
+			this.Load += new System.EventHandler(this.FontDialog_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

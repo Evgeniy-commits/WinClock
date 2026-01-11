@@ -126,6 +126,11 @@ namespace Clock
 
 		private void tsmiFont_Click(object sender, EventArgs e)
 		{
+			fontDialog.Location = new Point
+				(
+					this.Location.X - fontDialog.Width - 10,
+					this.Location.Y
+				);
 			fontDialog.ShowDialog();
 		}
 	}
