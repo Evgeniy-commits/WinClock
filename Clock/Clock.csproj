@@ -51,6 +51,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlarmDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlarmDialog.Designer.cs">
+      <DependentUpon>AlarmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AlarmsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlarmsForm.Designer.cs">
+      <DependentUpon>AlarmsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FontDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +77,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AlarmDialog.resx">
+      <DependentUpon>AlarmDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlarmsForm.resx">
+      <DependentUpon>AlarmsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FontDialog.resx">
       <DependentUpon>FontDialog.cs</DependentUpon>
     </EmbeddedResource>
