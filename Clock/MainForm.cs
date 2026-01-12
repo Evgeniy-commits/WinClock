@@ -18,6 +18,7 @@ namespace Clock
 		FontDialog fontDialog;
 		ColorDialog foregroundColorDialog;
 		ColorDialog backgroundColorDialog;
+		AlarmsDialog alarmForm;
 		public MainForm()
 		{
 			InitializeComponent();
@@ -112,7 +113,7 @@ namespace Clock
 		{
 			labelTime.Text = DateTime.Now.ToString
 				(
-					"hh:mm:ss tt",
+					"HH:mm:ss tt",
 					System.Globalization.CultureInfo.InvariantCulture
 				);
 			if (cbShowDate.Checked)
@@ -202,6 +203,12 @@ namespace Clock
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SaveSettings();
+		}
+
+		private void tsmiAlarms_Click(object sender, EventArgs e)
+		{
+			AlarmsDialog alarmsDialog = new AlarmsDialog();
+			alarmsDialog.ShowDialog();
 		}
 	}
 }
