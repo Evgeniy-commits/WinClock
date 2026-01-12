@@ -17,8 +17,7 @@ namespace Clock
 	{
 		private Alarm[] alarms = new Alarm[256];
 		private int aCount = 0;
-		private SoundPlayer player;
-
+		
 		public AlarmsDialog()
 		{
 			InitializeComponent();
