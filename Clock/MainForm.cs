@@ -72,7 +72,7 @@ namespace Clock
 
 			writer.Close();
 
-			System.Diagnostics.Process.Start("notepad", "Settings.ini");
+			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
 		}
 
 		void LoadSettings()
