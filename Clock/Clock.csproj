@@ -63,6 +63,7 @@
     <Compile Include="AlarmsForm.Designer.cs">
       <DependentUpon>AlarmsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomFileDialog.cs" />
     <Compile Include="FontDialog.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Clock
 {
@@ -48,6 +48,8 @@ namespace Clock
 				labelFilename.Text = fileDialog.FileName;			
 		}
 	}
+
+	
 
 	//public class CustomFileDialog : FileDialog
 	//{
