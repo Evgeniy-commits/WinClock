@@ -69,6 +69,7 @@
 			this.Controls.Add(this.buttonAdd);
 			this.Controls.Add(this.listBoxAlarms);
 			this.Name = "AlarmsForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Alarms";
 			this.ResumeLayout(false);
 
