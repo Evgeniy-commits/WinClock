@@ -14,16 +14,17 @@ namespace Clock
 {
 	public partial class AlarmDialog : Form
 	{
-		private readonly Dictionary<string, FileAttributes> _urlAttributes = new Dictionary<string, FileAttributes>();
-		private string _targetDirectory;
+		private readonly Dictionary<string, FileAttributes> Attributes = new Dictionary<string, FileAttributes>();
+		private string directory;
 		OpenFileDialog dialog;
 		public AlarmDialog()
 		{
 			InitializeComponent();
 			dtpDate.Enabled = false;
 			dialog = new OpenFileDialog();
+
 			dialog.FileOk += new CancelEventHandler(IsFileOk);
-			_targetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+			directory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 		}
 		private void IsFileOk(object sender, CancelEventArgs e)
 		{
@@ -45,46 +46,30 @@ namespace Clock
 		{
 			using (var dialog = new FolderBrowserDialog())
 			{
-				// 1. Устанавливаем начальную папку — Рабочий стол
 				dialog.RootFolder = Environment.SpecialFolder.Desktop;
 				dialog.Description = "Выберите папку:";
-
-
-				// 2. Показываем диалог
-				DialogResult result = dialog.ShowDialog();
-
-
-				if (result == DialogResult.OK)
+				if (dialog.ShowDialog() == DialogResult.OK)
 				{
-					// 3. Сохраняем выбранный путь
-					_targetDirectory = dialog.SelectedPath;
-
-					// 4. Обновляем интерфейс
-					labelFilename.Text = _targetDirectory;
+					directory = dialog.SelectedPath;
+					labelFilename.Text = directory;
 				}
 			}
-			//1.Находим все.url - файлы в целевой папке и скрываем их
-			HideAllUrlFilesInDirectory(_targetDirectory);
 
-			// 2. Открываем диалог
+			FindUrl(directory);
+
 			dialog = new OpenFileDialog();
-			{
-				dialog.InitialDirectory = _targetDirectory;
-				dialog.Filter = "All_sound_files(*.mp3;*.flac;*.flacc)|*.mp3;*.flac;*.flacc|" +
-								"mp3_files(*.mp3)|*.mp3|" +
-								"Flac_files(*.flac;*flacc)|*.flac;*flacc";
-				dialog.Title = "Выберите файлы (URL-ярлыки скрыты)";
+			dialog.InitialDirectory = directory;
+			dialog.Filter = "All_sound_files(*.mp3;*.flac;*.flacc)|*.mp3;*.flac;*.flacc|" +
+							"mp3_files(*.mp3)|*.mp3|" +
+							"Flac_files(*.flac;*flacc)|*.flac;*flacc";
+			dialog.Title = "Выберите файлы (URL-ярлыки скрыты)";
+			if (dialog.ShowDialog() == DialogResult.OK)
+				labelFilename.Text = dialog.FileName;
 
-
-				if (dialog.ShowDialog() == DialogResult.OK)
-					labelFilename.Text = dialog.FileName;
-			}
-
-			// 3. Восстанавливаем атрибуты всех .url-файлов
-			RestoreUrlFilesAttributes();		
+			RestoreUrl();
 		}
 
-		private void HideAllUrlFilesInDirectory(string directoryPath)
+		private void FindUrl(string directoryPath)
 		{
 			if (!Directory.Exists(directoryPath))
 				return;
@@ -95,28 +80,24 @@ namespace Clock
 			{
 				try
 				{
-					// Сохраняем исходные атрибуты
 					FileAttributes original = File.GetAttributes(filePath);
-					_urlAttributes[filePath] = original;
-
-
-					// Устанавливаем атрибут Hidden
+					Attributes[filePath] = original;
+										
 					File.SetAttributes(filePath, original | FileAttributes.Hidden);
 				}
 				catch (Exception ex)
 				{
-					// Логируем ошибку (например, нет прав)
 					MessageBox.Show($"Не удалось скрыть {filePath}:\n{ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
 
-		private void RestoreUrlFilesAttributes()
+		private void RestoreUrl()
 		{
-			foreach (var kvp in _urlAttributes)
+			foreach (KeyValuePair<string, FileAttributes> pair in Attributes)
 			{
-				string filePath = kvp.Key;
-				FileAttributes originalAttrs = kvp.Value;
+				string filePath = pair.Key;
+				FileAttributes originalAttrs = pair.Value;
 
 				if (File.Exists(filePath))
 				{
@@ -131,8 +112,7 @@ namespace Clock
 				}
 			}
 
-			// Очищаем кэш после восстановления
-			_urlAttributes.Clear();
+			Attributes.Clear();
 		}
 	}
 }
