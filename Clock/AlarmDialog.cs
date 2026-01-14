@@ -97,13 +97,13 @@ namespace Clock
 			foreach (KeyValuePair<string, FileAttributes> pair in Attributes)
 			{
 				string filePath = pair.Key;
-				FileAttributes originalAttrs = pair.Value;
+				FileAttributes original = pair.Value;
 
 				if (File.Exists(filePath))
 				{
 					try
 					{
-						File.SetAttributes(filePath, originalAttrs);
+						File.SetAttributes(filePath, original);
 					}
 					catch (Exception ex)
 					{
