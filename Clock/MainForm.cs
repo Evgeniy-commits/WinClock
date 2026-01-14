@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Clock
 {
@@ -214,64 +215,19 @@ namespace Clock
 				);
 			alarms.ShowDialog();
 		}
+
+		private void tsmiShowConsole_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void tsmiShowConsole_CheckedChanged(object sender, EventArgs e)
+		{
+			if ((sender as ToolStripMenuItem).Checked) AllocConsole();
+		}
+		[DllImport("kernel32.dll")]
+		public static extern void AllocConsole();
+		[DllImport("kernel32.dll")]
+		public static extern void FreeConsole();
 	}
 }
-
-
-
-//private void buttonAddAlarm_Click(object sender, EventArgs e)
-//{
-//	if (string.IsNullOrWhiteSpace(textBoxAlarmsName.Text))
-//	{
-//		MessageBox.Show
-//			(
-//				"Введите название",
-//				"Ошибка",
-//				MessageBoxButtons.OK,
-//				MessageBoxIcon.Information
-//			);
-//		return;
-//	}
-
-//	if (aCount >= alarms.Length)
-//	{
-//		MessageBox.Show
-//			(
-//				$"Лимит: {alarms.Length}",
-//				"Ошибка",
-//				MessageBoxButtons.OK,
-//				MessageBoxIcon.Information
-//			);
-//		return;
-//	}
-
-//	Alarm newAlarm = new Alarm
-//	{
-//		Name = textBoxAlarmsName.Text,
-//		Time = dateTimePicker.Value,
-//		IsTrig = false
-//	};
-
-//	alarms[aCount] = newAlarm;
-//	aCount++;
-
-//	SaveAlarms();
-//	UpdateListBox();
-//	textBoxAlarmsName.Text = "";
-//}
-
-//private void buttonRemoveAlarm_Click(object sender, EventArgs e)
-//{
-//	if (listBoxAlarms.SelectedIndex == -1) return;
-
-//	int selectedIndex = listBoxAlarms.SelectedIndex;
-
-//	for (int i = selectedIndex; i < aCount - 1; i++)
-//	{
-//		alarms[i] = alarms[i + 1];
-//	}
-
-//	aCount--;
-//	SaveAlarms();
-//	UpdateListBox();
-//}
