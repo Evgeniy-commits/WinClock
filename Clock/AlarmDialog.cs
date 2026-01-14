@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Clock
 {
@@ -49,116 +49,98 @@ namespace Clock
 		}
 	}
 
-	//public class CustomFileDialog : FileDialog
-	//{
-	//	// Храним исходные атрибуты для восстановления
-	//	private readonly Dictionary<string, FileAttributes> _originalAttributes = new();
+//	using System;
+//using System.Collections.Generic;
+//using System.IO;
+//using System.Windows.Forms;
 
-	//	private bool _filesWereHidden = false;
+//public partial class MainForm : Form
+//	{
+//		// Храним исходные атрибуты .url-файлов для восстановления
+//		private readonly Dictionary<string, FileAttributes> _urlAttributes = new();
 
-
-	//	public CustomFileDialog()
-	//	{
-	//		Filter = "Текстовые файлы (*.txt)|*.txt|Изображения (*.jpg;*.png)|*.jpg;*.png|Все файлы (*.*)|*.*";
-	//		Title = "Выберите файл (ярлыки будут скрыты)";
-	//	}
-
-	//	protected override bool ValidateNames()
-	//	{
-	//		try
-	//		{
-	//			_filesWereHidden = false;
-	//			_originalAttributes.Clear();
-
-	//			foreach (string fileName in FileNames)
-	//			{
-	//				if (!File.Exists(fileName))
-	//				{
-	//					MessageBox.Show($"Файл не найден:\n{fileName}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-	//					return false;
-	//				}
-
-	//				string ext = Path.GetExtension(fileName).ToLower();
-
-	//				// Если это ярлык — скрываем
-	//				if (ext == ".lnk" || ext == ".url")
-	//				{
-	//					try
-	//					{
-	//						// Сохраняем исходные атрибуты
-	//						FileAttributes original = File.GetAttributes(fileName);
-	//						_originalAttributes[fileName] = original;
+//		// Папка, где ищем .url-файлы (можно задать извне)
+//		private string _targetDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
 
-	//						// Устанавливаем атрибут "скрытый"
-	//						File.SetAttributes(fileName, original | FileAttributes.Hidden);
-	//						_filesWereHidden = true;
-
-	//						//MessageBox.Show(
-	//						//	($"Файл \"{fileName}\" скрыт (атрибут \"Скрытый\" установлен).",
-	//						//	"Информация",
-	//						//	MessageBoxButtons.OK,
-	//						//	MessageBoxIcon.Information);
-	//					}
-	//					catch (Exception ex)
-	//					{
-	//						MessageBox.Show
-	//							($"Не удалось скрыть файл:\n{ex.Message}",
-	//							"Ошибка",
-	//							MessageBoxButtons.OK,
-	//							MessageBoxIcon.Error);
-	//						return false; // Отменяем выбор при ошибке скрытия
-	//					}
-	//				}
-	//			}
-
-	//			return true; // Продолжаем — файлы выбраны и (возможно) скрыты
-	//		}
-	//		catch (Exception ex)
-	//		{
-	//			MessageBox.Show($"Ошибка проверки файлов:\n{ex.Message}", "Системная ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-	//			return false;
-	//		}
-	//	}
-
-	//	protected override void Reset()
-	//	{
-	//		base.Reset();
-	//		RestoreFiles(); // Восстанавливаем при сбросе диалога
-	//	}
-
-	//	// Метод для восстановления атрибутов
-	//	private void RestoreFiles()
-	//	{
-	//		if (!_filesWereHidden) return;
+//		private void buttonShowDialog_Click(object sender, EventArgs e)
+//		{
+//			// 1. Находим все .url-файлы в целевой папке и скрываем их
+//			HideAllUrlFilesInDirectory(_targetDirectory);
 
 
-	//		foreach (var kvp in _originalAttributes)
-	//		{
-	//			try
-	//			{
-	//				File.SetAttributes(kvp.Key, kvp.Value);
-	//			}
-	//			catch (Exception ex)
-	//			{
-	//				// Логируем, но не прерываем — дальше диалог уже закрыт
-	//				Console.WriteLine($"Не удалось восстановить атрибуты для {kvp.Key}: {ex.Message}");
-	//			}
-	//		}
-
-	//		_originalAttributes.Clear();
-	//		_filesWereHidden = false;
-	//	}
-
-	//	// Переопределяем ShowDialog, чтобы гарантировать восстановление при закрытии
-	//	public new DialogResult ShowDialog()
-	//	{
-	//		DialogResult result = base.ShowDialog();
+//			// 2. Открываем диалог
+//			using (var dialog = new OpenFileDialog())
+//			{
+//				dialog.InitialDirectory = _targetDirectory;
+//				dialog.Filter = "Все файлы (*.*)|*.*";  // или свой фильтр
+//				dialog.Title = "Выберите файлы (URL-ярлыки скрыты)";
 
 
-	//		// Если диалог закрыт (OK/Cancel), восстанавливаем файлы
-	//		RestoreFiles();
-	//		return result;
-	//	}
-	//}
+//				DialogResult result = dialog.ShowDialog();
+
+//				// Здесь можно обработать result (OK/Cancel), но это не влияет на восстановление
+//			}
+
+//			// 3. Восстанавливаем атрибуты всех .url-файлов
+//			RestoreUrlFilesAttributes();
+//		}
+
+//		/// <summary>
+//		/// Находит все .url-файлы в директории, сохраняет их атрибуты и делает скрытыми
+//		/// </summary>
+//		private void HideAllUrlFilesInDirectory(string directoryPath)
+//		{
+//			if (!Directory.Exists(directoryPath))
+//				return;
+
+//			string[] urlFiles = Directory.GetFiles(directoryPath, "*.url", SearchOption.TopDirectoryOnly);
+
+//			foreach (string filePath in urlFiles)
+//			{
+//				try
+//				{
+//					// Сохраняем исходные атрибуты
+//					FileAttributes original = File.GetAttributes(filePath);
+//					_urlAttributes[filePath] = original;
+
+
+//					// Устанавливаем атрибут Hidden
+//					File.SetAttributes(filePath, original | FileAttributes.Hidden);
+//				}
+//				catch (Exception ex)
+//				{
+//					// Логируем ошибку (например, нет прав)
+//					MessageBox.Show($"Не удалось скрыть {filePath}:\n{ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//				}
+//			}
+//		}
+
+//		/// <summary>
+//		/// Восстанавливает атрибуты всех сохранённых .url-файлов
+//		/// </summary>
+//		private void RestoreUrlFilesAttributes()
+//		{
+//			foreach (var kvp in _urlAttributes)
+//			{
+//				string filePath = kvp.Key;
+//				FileAttributes originalAttrs = kvp.Value;
+
+//				if (File.Exists(filePath))
+//				{
+//					try
+//					{
+//						File.SetAttributes(filePath, originalAttrs);
+//					}
+//					catch (Exception ex)
+//					{
+//						MessageBox.Show($"Не удалось восстановить {filePath}:\n{ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+//					}
+//				}
+//			}
+
+//			// Очищаем кэш после восстановления
+//			_urlAttributes.Clear();
+//		}
+//	}
 }
