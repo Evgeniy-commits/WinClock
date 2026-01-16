@@ -21,7 +21,7 @@ namespace Clock
 			for (byte i = 0; i < 7; i++)
 			{
 				int d = ((1 << i) & days);
-				(clb.Items[i] as CheckBox).Checked = Convert.ToBoolean(d);
+				//(clb.Items[i] as CheckBox).Checked = Convert.ToBoolean(d);
 			}
 		}
 		public override string ToString()

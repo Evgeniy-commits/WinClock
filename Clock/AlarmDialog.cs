@@ -33,12 +33,14 @@ namespace Clock
 		public AlarmDialog(Alarm alarm) : this()
 		{
 			Alarm = alarm;
+			Extract();
 		}
 		void Extract()
 		{
-			dtpDate.Value =	Alarm.Date;
+			if(Alarm.Date != DateTime.MaxValue) dtpDate.Value =	Alarm.Date;
 			dtpTime.Value = Alarm.Time;
 			Alarm.Days.Extract(clbWeekDays); 
+			labelFilename.Text = Alarm.Filename;
 		}
 		private void IsFileOk(object sender, CancelEventArgs e)
 		{

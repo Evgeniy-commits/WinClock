@@ -40,6 +40,7 @@
 			this.listBoxAlarms.Name = "listBoxAlarms";
 			this.listBoxAlarms.Size = new System.Drawing.Size(522, 277);
 			this.listBoxAlarms.TabIndex = 0;
+			this.listBoxAlarms.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxAlarms_MouseDoubleClick);
 			// 
 			// buttonAdd
 			// 
