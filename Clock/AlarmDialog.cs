@@ -37,7 +37,11 @@ namespace Clock
 		}
 		void Extract()
 		{
-			if(Alarm.Date != DateTime.MaxValue) dtpDate.Value =	Alarm.Date;
+			if(Alarm.Date != DateTime.MaxValue) 
+			{
+				dtpDate.Value = Alarm.Date;
+				checkBoxUseDate.Checked = true;
+			}
 			dtpTime.Value = Alarm.Time;
 			Alarm.Days.Extract(clbWeekDays); 
 			labelFilename.Text = Alarm.Filename;

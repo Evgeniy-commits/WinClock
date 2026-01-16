@@ -20,8 +20,7 @@ namespace Clock
 			if (clb.Items.Count != 7) return;
 			for (byte i = 0; i < 7; i++)
 			{
-				int d = ((1 << i) & days);
-				//(clb.Items[i] as CheckBox).Checked = Convert.ToBoolean(d);
+				clb.SetItemChecked(i, Convert.ToBoolean((1 << i) & days));
 			}
 		}
 		public override string ToString()
