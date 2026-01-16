@@ -38,7 +38,7 @@ namespace Clock
 		{
 			dtpDate.Value =	Alarm.Date;
 			dtpTime.Value = Alarm.Time;
-			clbWeekDays.SelectedIndices = 
+			Alarm.Days.Extract(clbWeekDays); 
 		}
 		private void IsFileOk(object sender, CancelEventArgs e)
 		{
