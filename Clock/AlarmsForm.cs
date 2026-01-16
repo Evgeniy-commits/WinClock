@@ -58,7 +58,7 @@ namespace Clock
 			DialogResult result = dialog.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				alarms[index] = dialog.EditAlarm;
+				alarms[index] = dialog.alarms;
 				ListClear();
 			}
 			dialog.Dispose();

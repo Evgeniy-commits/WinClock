@@ -17,7 +17,7 @@ namespace Clock
 		OpenFileDialog fileDialog;
 
 		public Alarm EditAlarm { get; set; }
-		//public Alarm alarms { get; set; }
+		public Alarm alarms { get; set; }
 		public AlarmDialog()
 		{
 			InitializeComponent();

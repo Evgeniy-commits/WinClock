@@ -21,11 +21,11 @@ namespace Clock
 
 		public Alarm(Alarm other)
 		{
-			Date = other.Date;
-			Time = other.Time;
-			Days = other.Days;
-			CheckedStates = (bool[])other.CheckedStates.Clone();
-			Filename = other.Filename;
+			this.Date = other.Date;
+			this.Time = other.Time;
+			this.Days = other.Days;
+			this.CheckedStates = (bool[])other.CheckedStates.Clone();
+			this.Filename = other.Filename;
 		}
 		public override string ToString()
 		{
