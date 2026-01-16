@@ -29,6 +29,17 @@ namespace Clock
 
 			Alarm = new Alarm();
 		}
+
+		public AlarmDialog(Alarm alarm) : this()
+		{
+			Alarm = alarm;
+		}
+		void Extract()
+		{
+			dtpDate.Value =	Alarm.Date;
+			dtpTime.Value = Alarm.Time;
+			clbWeekDays.SelectedIndices = 
+		}
 		private void IsFileOk(object sender, CancelEventArgs e)
 		{
 			string ext = Path.GetExtension(fileDialog.FileName).ToLower();
