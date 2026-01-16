@@ -16,8 +16,8 @@ namespace Clock
 	{
 		OpenFileDialog fileDialog;
 
-		public Alarm EditAlarm { get; private set; }
-		public Alarm Alarm { get; private set; }
+		public Alarm EditAlarm { get; set; }
+		//public Alarm alarms { get; set; }
 		public AlarmDialog()
 		{
 			InitializeComponent();
@@ -28,14 +28,14 @@ namespace Clock
 				"mp3_files(*.mp3)|*.mp3|" +
 				"Flac_files(*.flac;*flacc)|*.flac;*flacc";
 			fileDialog.FileOk += new CancelEventHandler(IsFileOk);
-
-			//Alarm = new Alarm();
+			//alarm = new Alarm();
 		}
 
-		public AlarmDialog(Alarm Alarm)
+		public AlarmDialog(Alarm alarms)
 		{
 			InitializeComponent ();
-			EditAlarm = new Alarm(Alarm);
+			if(alarms != null)  EditAlarm = new Alarm(alarms);
+			else EditAlarm = new Alarm();
 			LoadData();
 		}
 
@@ -109,14 +109,17 @@ namespace Clock
 
 		private void buttonOK_Click(object sender, EventArgs e)
 		{
-			Alarm.Date = checkBoxUseDate.Checked ? dtpDate.Value : DateTime.MaxValue;
-			Alarm.Time = dtpTime.Value;
-			Alarm.Days = new Week(GetDaysMask());
-			Alarm.Filename = labelFilename.Text;
-			Alarm.CheckedStates = new bool[clbWeekDays.Items.Count];
+			if (EditAlarm == null) throw new InvalidOperationException("Alarm is null");
+			if (clbWeekDays == null) throw new InvalidOperationException("clbWeekDays is null");
+
+			EditAlarm.Date = checkBoxUseDate.Checked ? dtpDate.Value : DateTime.MaxValue;
+			EditAlarm.Time = dtpTime.Value;
+			EditAlarm.Days = new Week(GetDaysMask());
+			EditAlarm.Filename = labelFilename.Text;
+			EditAlarm.CheckedStates = new bool[clbWeekDays.Items.Count];
 			for (int i = 0; i < clbWeekDays.Items.Count; i++)
 			{
-				Alarm.CheckedStates[i] = clbWeekDays.GetItemChecked(i);
+				EditAlarm.CheckedStates[i] = clbWeekDays.GetItemChecked(i);
 			}
 
 			DialogResult = DialogResult.OK;

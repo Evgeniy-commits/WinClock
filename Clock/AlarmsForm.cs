@@ -18,8 +18,8 @@ namespace Clock
 		{
 			InitializeComponent();
 			alarm = new AlarmDialog();
-			//alarms = new Alarm[] { };
-			//SetupListBox();
+			alarms = new Alarm[] { };
+			SetupListBox();
 
 		}
 
@@ -27,7 +27,7 @@ namespace Clock
 		{
 			if (alarm.ShowDialog() == DialogResult.OK)
 			{
-				listBoxAlarms.Items.Add(alarm.Alarm);
+				listBoxAlarms.Items.Add(alarm.EditAlarm);
 			}
 		}
 
