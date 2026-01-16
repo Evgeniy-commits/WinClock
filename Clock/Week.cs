@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Clock
 {
@@ -25,5 +26,20 @@ namespace Clock
 			}
   			return days;
 		}
+		public bool[] GetStates()
+		{
+			bool[] states = new bool[Count];
+			for (int i = 0; i < Count; i++)
+			{
+				states[i] = (days & (1 << i)) != 0;
+			}
+			return states;
+		}
+
+		public string GetDayName(int index)
+		{
+			return NAMES[index];
+		}
+		public int Count => NAMES.Length;
 	}
 }

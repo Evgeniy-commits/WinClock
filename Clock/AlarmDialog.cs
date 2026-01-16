@@ -15,6 +15,8 @@ namespace Clock
 	public partial class AlarmDialog : Form
 	{
 		OpenFileDialog fileDialog;
+
+		public Alarm EditAlarm { get; private set; }
 		public Alarm Alarm { get; private set; }
 		public AlarmDialog()
 		{
@@ -27,7 +29,32 @@ namespace Clock
 				"Flac_files(*.flac;*flacc)|*.flac;*flacc";
 			fileDialog.FileOk += new CancelEventHandler(IsFileOk);
 
-			Alarm = new Alarm();
+			//Alarm = new Alarm();
+		}
+
+		public AlarmDialog(Alarm Alarm)
+		{
+			InitializeComponent ();
+			EditAlarm = new Alarm(Alarm);
+			LoadData();
+		}
+
+		private void LoadData()
+		{
+			dtpDate.Value = EditAlarm.Date;
+			dtpTime.Value = EditAlarm.Time;
+			labelFilename.Text = EditAlarm.Filename;
+
+			clbWeekDays.Items.Clear();
+
+			bool[] checkedStates = EditAlarm.Days.GetStates();
+
+			for (int i = 0; i < EditAlarm.Days.Count; i++)
+			{
+				string dayName = EditAlarm.Days.GetDayName(i);
+				clbWeekDays.Items.Add(dayName, checkedStates[i]);
+			}
+			
 		}
 		private void IsFileOk(object sender, CancelEventArgs e)
 		{
@@ -86,6 +113,20 @@ namespace Clock
 			Alarm.Time = dtpTime.Value;
 			Alarm.Days = new Week(GetDaysMask());
 			Alarm.Filename = labelFilename.Text;
+			Alarm.CheckedStates = new bool[clbWeekDays.Items.Count];
+			for (int i = 0; i < clbWeekDays.Items.Count; i++)
+			{
+				Alarm.CheckedStates[i] = clbWeekDays.GetItemChecked(i);
+			}
+
+			DialogResult = DialogResult.OK;
+			Close();
+		}
+
+		private void buttonCansel_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.Cancel;
+			Close();
 		}
 	}
 }

@@ -143,6 +143,7 @@
 			this.buttonCansel.TabIndex = 8;
 			this.buttonCansel.Text = "Cancel";
 			this.buttonCansel.UseVisualStyleBackColor = true;
+			this.buttonCansel.Click += new System.EventHandler(this.buttonCansel_Click);
 			// 
 			// AlarmDialog
 			// 

@@ -11,7 +11,22 @@ namespace Clock
 		public DateTime Date { get; set; }
 		public DateTime Time { get; set; }
 		public Week Days { get; set; }
+		public bool[] CheckedStates { get; set; }
 		public string Filename { get; set; }
+
+		public Alarm()
+		{
+			CheckedStates = new bool[Days.Count];
+		}
+
+		public Alarm(Alarm other)
+		{
+			Date = other.Date;
+			Time = other.Time;
+			Days = other.Days;
+			CheckedStates = (bool[])other.CheckedStates.Clone();
+			Filename = other.Filename;
+		}
 		public override string ToString()
 		{
 			//return $"{Date}, {Time}, {Days.ToString()}, {Filename}";
@@ -22,5 +37,6 @@ namespace Clock
 			info += $"\t {Filename.Split('\\').Last()}";
 			return info;
 		}
+
 	}
 }
