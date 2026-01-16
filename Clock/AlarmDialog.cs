@@ -68,11 +68,6 @@ namespace Clock
 				labelFilename.Text = fileDialog.FileName;			
 		}
 
-		private void clbWeekDays_ItemCheck(object sender, ItemCheckEventArgs e)
-		{
-			
-		}
-
 		private void clbWeekDays_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			for (int i = 0; i < clbWeekDays.CheckedItems.Count; i++)
@@ -101,7 +96,7 @@ namespace Clock
 		{
 			Alarm.Date = checkBoxUseDate.Checked ? dtpDate.Value : DateTime.MaxValue;
 			Alarm.Time = dtpTime.Value;
-			Alarm.Days = new Week(GetDaysMask());
+			Alarm.Days = new Week(checkBoxUseDate.Checked ? (byte) 0 : GetDaysMask());
 			Alarm.Filename = labelFilename.Text;
 		}
 	}

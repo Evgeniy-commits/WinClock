@@ -34,7 +34,7 @@ namespace Clock
 			{
 				AlarmDialog alarm = new AlarmDialog(listBoxAlarms.SelectedItem as  Alarm);
 				alarm.ShowDialog();
-				listBoxAlarms.Refresh();
+				listBoxAlarms.Items[listBoxAlarms.SelectedIndex] = new Alarm(alarm.Alarm);
 			}
 			else 
 			{
