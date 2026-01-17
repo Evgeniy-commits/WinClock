@@ -233,11 +233,6 @@ namespace Clock
 			alarms.ShowDialog();
 		}
 
-		private void tsmiShowConsole_Click(object sender, EventArgs e)
-		{
-
-		}
-
 		private void tsmiShowConsole_CheckedChanged(object sender, EventArgs e)
 		{
 			if ((sender as ToolStripMenuItem).Checked) AllocConsole();

@@ -36,7 +36,7 @@
 			// listBoxAlarms
 			// 
 			this.listBoxAlarms.FormattingEnabled = true;
-			this.listBoxAlarms.Location = new System.Drawing.Point(12, 12);
+			this.listBoxAlarms.Location = new System.Drawing.Point(13, 12);
 			this.listBoxAlarms.Name = "listBoxAlarms";
 			this.listBoxAlarms.Size = new System.Drawing.Size(522, 277);
 			this.listBoxAlarms.TabIndex = 0;
@@ -72,14 +72,14 @@
 			this.Name = "AlarmsForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Alarms";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlarmsForm_FormClosing);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.ListBox listBoxAlarms;
 		private System.Windows.Forms.Button buttonAdd;
 		private System.Windows.Forms.Button buttonDelete;
+		public System.Windows.Forms.ListBox listBoxAlarms;
 	}
 }

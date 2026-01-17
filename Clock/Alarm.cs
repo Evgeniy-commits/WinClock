@@ -24,12 +24,11 @@ namespace Clock
 		}
 		public override string ToString()
 		{
-			//return $"{Date}, {Time}, {Days.ToString()}, {Filename}";
 			string info = "";
 			info += Date != DateTime.MaxValue ? Date.ToString("yyyy.MM.dd") : "Каждый день";
 			info += $"\t{DateTime.Today.Add(Time).ToString("HH:mm:ss")}";
 			info += $"\t{Days}";
-			info += $"\t {Filename.Split('\\').Last()}";
+			info += $"\t {Filename.Split('\\').Last()};";
 			return info;
 		}
 	}

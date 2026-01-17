@@ -15,6 +15,7 @@ namespace Clock
 	public partial class AlarmDialog : Form
 	{
 		OpenFileDialog fileDialog;
+		private ListBox listBox;
 		public Alarm Alarm { get; private set; }
 		public AlarmDialog()
 		{
@@ -34,6 +35,10 @@ namespace Clock
 		{
 			Alarm = alarm;
 			Extract();
+		}
+		public AlarmDialog(ListBox listBoxAlarms) : this() 
+		{
+			listBox = listBoxAlarms;
 		}
 		void Extract()
 		{
@@ -98,6 +103,46 @@ namespace Clock
 			Alarm.Time = dtpTime.Value.TimeOfDay;
 			Alarm.Days = new Week(checkBoxUseDate.Checked ? (byte) 0 : GetDaysMask());
 			Alarm.Filename = labelFilename.Text;
+		}
+
+		public void SaveAlarm(ListBox listBox)
+		{
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			StreamWriter writer = new StreamWriter("Alarm.ini");
+			
+			foreach (Alarm Alarm in listBox.Items)
+			{
+				writer.WriteLine(Alarm.ToString());
+			}
+			
+			writer.Close();
+
+			System.Diagnostics.Process.Start("notepad", "Alarm.ini");
+		}
+
+		public void LoadAlarm()
+		{
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+
+			try
+			{
+				StreamReader reader = new StreamReader("Alarm.ini");
+				string[] lines = new string[] {} ;
+				string line;
+				
+
+
+					if (checkBoxUseDate.Checked) dtpDate.Value = DateTime.Parse(reader.ReadLine());
+				else dtpTime.Value = DateTime.MaxValue;
+				dtpTime.Value = DateTime.Parse(reader.ReadLine());
+				clbWeekDays = GetDaysMask(reader.ReadLine());
+				labelFilename.Text = reader.ReadLine();
+				reader.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, ex.Message, "Settings issue", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
 		}
 	}
 }
