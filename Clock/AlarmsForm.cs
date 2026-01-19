@@ -46,7 +46,7 @@ namespace Clock
 
 		private void AlarmsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			//SaveAlarm();
+			SaveAlarm();
 		}
 		void SaveAlarm()
 		{
@@ -66,7 +66,6 @@ namespace Clock
 		void LoadAlarm()
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-			Alarm alarmLoad = new Alarm();
 			try
 			{
 				StreamReader reader = new StreamReader("Alarm.ini");
@@ -77,13 +76,14 @@ namespace Clock
 					lines.Add(line);
 				foreach (string i in lines)
 				{
+					Alarm alarmLoad = new Alarm();
 					string[] value = i.Split('\t');
 					int j = 0;
 					if (DateTime.TryParse(value[j], out DateTime result))
 						alarmLoad.Date = DateTime.Parse(value[j++]);
 					else 
 					{ 
-						alarmLoad.Date = DateTime.MinValue; 
+						alarmLoad.Date = DateTime.MaxValue; 
 						j++;
 					}
 					alarmLoad.Time = TimeSpan.Parse(value[j++]);
@@ -111,7 +111,7 @@ namespace Clock
 				for (int i = 0; i < Names.Length; i++)
 				{
 					if (editstr == Names[i])
-					{	
+					{
 						daymask |= (byte)(1 << i);
 						break;
 					}
@@ -119,13 +119,6 @@ namespace Clock
 			}
 			return daymask;
 		}
-		void SetDays(byte mask)
-		{
-				
-			for (int i = 0; i < 7; i++)
-			{
-				alarm.clbWeekDays.SetItemChecked(i, Convert.ToBoolean((1 << i) & mask));
-			}
-		}
+
 	}
 }

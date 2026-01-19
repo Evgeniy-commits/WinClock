@@ -100,15 +100,5 @@ namespace Clock
 			Alarm.Days = new Week(checkBoxUseDate.Checked ? (byte) 0 : GetDaysMask());
 			Alarm.Filename = labelFilename.Text;
 		}
-
-		public void FillWeekDays()
-		{
-			string[] days = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
-			foreach (string day in days)
-			{
-				clbWeekDays.Items.Add(day);
-			}
-		}
-
 	}
 }
