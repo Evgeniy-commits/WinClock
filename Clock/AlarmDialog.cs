@@ -15,7 +15,6 @@ namespace Clock
 	public partial class AlarmDialog : Form
 	{
 		OpenFileDialog fileDialog;
-		private ListBox listBox;
 		public Alarm Alarm { get; private set; }
 		public AlarmDialog()
 		{
@@ -36,10 +35,7 @@ namespace Clock
 			Alarm = alarm;
 			Extract();
 		}
-		public AlarmDialog(ListBox listBoxAlarms) : this() 
-		{
-			listBox = listBoxAlarms;
-		}
+		public CheckedListBox WeekDaysControl => clbWeekDays;
 		void Extract()
 		{
 			if(Alarm.Date != DateTime.MaxValue) 
@@ -89,7 +85,7 @@ namespace Clock
 			Console.WriteLine("\n-------------------------------------\n");
 		}
 
-		byte GetDaysMask()
+		public byte GetDaysMask()
 		{
 			byte days = 0;
 			for (int i = 0; i < clbWeekDays.CheckedIndices.Count; i++)
@@ -105,44 +101,14 @@ namespace Clock
 			Alarm.Filename = labelFilename.Text;
 		}
 
-		public void SaveAlarm(ListBox listBox)
+		public void FillWeekDays()
 		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-			StreamWriter writer = new StreamWriter("Alarm.ini");
-			
-			foreach (Alarm Alarm in listBox.Items)
+			string[] days = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
+			foreach (string day in days)
 			{
-				writer.WriteLine(Alarm.ToString());
+				clbWeekDays.Items.Add(day);
 			}
-			
-			writer.Close();
-
-			System.Diagnostics.Process.Start("notepad", "Alarm.ini");
 		}
 
-		public void LoadAlarm()
-		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-
-			try
-			{
-				StreamReader reader = new StreamReader("Alarm.ini");
-				string[] lines = new string[] {} ;
-				string line;
-				
-
-
-					if (checkBoxUseDate.Checked) dtpDate.Value = DateTime.Parse(reader.ReadLine());
-				else dtpTime.Value = DateTime.MaxValue;
-				dtpTime.Value = DateTime.Parse(reader.ReadLine());
-				clbWeekDays = GetDaysMask(reader.ReadLine());
-				labelFilename.Text = reader.ReadLine();
-				reader.Close();
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(this, ex.Message, "Settings issue", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,18 +14,16 @@ namespace Clock
 	public partial class AlarmsForm : Form
 	{
 		AlarmDialog alarm;
+		Alarm alarmLoad;
 		public ListBox List { get => listBoxAlarms; }
-		
 		public AlarmsForm()
 		{
 			InitializeComponent();
 			alarm = new AlarmDialog();
+			LoadAlarm();
 		}
-
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
-			//AlarmDialog alarm = new AlarmDialog();
-			//alarm.LoadAlarm();
 			if (alarm.ShowDialog() == DialogResult.OK)
 			{
 				listBoxAlarms.Items.Add(new Alarm(alarm.Alarm));
@@ -47,8 +46,86 @@ namespace Clock
 
 		private void AlarmsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			AlarmDialog dialog = new AlarmDialog(this.listBoxAlarms);
-			alarm.SaveAlarm(listBoxAlarms);
+			//SaveAlarm();
+		}
+		void SaveAlarm()
+		{
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			StreamWriter writer = new StreamWriter("Alarm.ini");
+
+			foreach (Alarm Alarm in listBoxAlarms.Items)
+			{
+				writer.WriteLine(Alarm.ToString());
+			}
+
+			writer.Close();
+
+			System.Diagnostics.Process.Start("notepad", "Alarm.ini");
+		}
+
+		void LoadAlarm()
+		{
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			Alarm alarmLoad = new Alarm();
+			try
+			{
+				StreamReader reader = new StreamReader("Alarm.ini");
+				List<string> lines = new List<string>();
+				string line;
+				
+				while ((line = reader.ReadLine()) != null)
+					lines.Add(line);
+				foreach (string i in lines)
+				{
+					string[] value = i.Split('\t');
+					int j = 0;
+					if (DateTime.TryParse(value[j], out DateTime result))
+						alarmLoad.Date = DateTime.Parse(value[j++]);
+					else 
+					{ 
+						alarmLoad.Date = DateTime.MinValue; 
+						j++;
+					}
+					alarmLoad.Time = TimeSpan.Parse(value[j++]);
+					alarmLoad.Days = new Week(ParseDays(value[j++]));
+					alarmLoad.Filename = value[j++];
+					listBoxAlarms.Items.Add(alarmLoad);
+				}
+
+				reader.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, ex.Message, "Settings issue", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		byte ParseDays(string Days)
+		{
+			string[] Names = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
+			string[] days = Days.Split(',');
+			byte daymask = 0;
+			foreach (string day in days)
+			{
+				string editstr = day.Trim();
+				for (int i = 0; i < Names.Length; i++)
+				{
+					if (editstr == Names[i])
+					{	
+						daymask |= (byte)(1 << i);
+						break;
+					}
+				}
+			}
+			return daymask;
+		}
+		void SetDays(byte mask)
+		{
+				
+			for (int i = 0; i < 7; i++)
+			{
+				alarm.clbWeekDays.SetItemChecked(i, Convert.ToBoolean((1 << i) & mask));
+			}
 		}
 	}
 }

@@ -25,10 +25,10 @@ namespace Clock
 		public override string ToString()
 		{
 			string info = "";
-			info += Date != DateTime.MaxValue ? Date.ToString("yyyy.MM.dd") : "Каждый день";
+			info += Date != DateTime.MaxValue ? Date.ToString("yyyy.MM.dd") : "Выбранные дни";
 			info += $"\t{DateTime.Today.Add(Time).ToString("HH:mm:ss")}";
 			info += $"\t{Days}";
-			info += $"\t {Filename.Split('\\').Last()};";
+			info += $"\t {Filename.Split('\\').Last()}";
 			return info;
 		}
 	}
