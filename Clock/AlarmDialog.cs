@@ -26,8 +26,8 @@ namespace Clock
 				"mp3_files(*.mp3)|*.mp3|" +
 				"Flac_files(*.flac;*flacc)|*.flac;*flacc";
 			fileDialog.FileOk += new CancelEventHandler(IsFileOk);
-
 			Alarm = new Alarm();
+			for (int i = 0; i < 7; i++)	clbWeekDays.SetItemChecked(i, true);
 		}
 
 		public AlarmDialog(Alarm alarm) : this()

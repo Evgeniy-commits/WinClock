@@ -169,7 +169,6 @@
 		#endregion
 
 		private System.Windows.Forms.DateTimePicker dtpDate;
-		private System.Windows.Forms.DateTimePicker dtpTime;
 		private System.Windows.Forms.CheckBox checkBoxUseDate;
 		private System.Windows.Forms.Label labelWeekDays;
 		private System.Windows.Forms.CheckedListBox clbWeekDays;
@@ -177,5 +176,6 @@
 		private System.Windows.Forms.Button buttonAdd;
 		private System.Windows.Forms.Button buttonOK;
 		private System.Windows.Forms.Button buttonCansel;
+		private System.Windows.Forms.DateTimePicker dtpTime;
 	}
 }
