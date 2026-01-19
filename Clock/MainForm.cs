@@ -129,7 +129,7 @@ namespace Clock
 					alarm.Date == DateTime.MaxValue ?
 					alarm.Days.Contains((byte)DateTime.Now.DayOfWeek) :
 					CompareDates(alarm.Date, DateTime.Now)
-				  )
+				   )
 				&& alarm.Time.Hours == DateTime.Now.Hour
 				&& alarm.Time.Minutes == DateTime.Now.Minute
 				&& alarm.Time.Seconds == DateTime.Now.Second
