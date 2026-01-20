@@ -50,7 +50,6 @@ namespace Clock
 			this.FormBorderStyle = visible ? FormBorderStyle.FixedSingle : FormBorderStyle.None;
 			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
 		}
-		
 		void SaveSettings()
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
@@ -77,7 +76,6 @@ namespace Clock
 
 			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
 		}
-
 		void LoadSettings()
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
@@ -135,78 +133,77 @@ namespace Clock
 				&& alarm.Time.Seconds == DateTime.Now.Second
 				)
 				MessageBox.Show(alarm.ToString());
-			if(DateTime.Now.Second % 5 == 0) alarm = FindNextAlarm();
-			notifyIcon.Text = labelTime.Text ;
+			//Alarm alarmWakeUp = FindNextAlarm();
+			//SaveAlarmToFile(alarmWakeUp);
+			//System.Diagnostics.Process.Start("notepad", "alarmWakeUp.ini");
+			if (DateTime.Now.Second % 5 == 0) alarm = FindNextAlarm();
+			notifyIcon.Text = labelTime.Text;
 		}
-
 		bool CompareDates(DateTime date1, DateTime date2)
 		{
-			return date1.Year == date2.Year 
-				&& date1.Month == date2.Month 
+			return date1.Year == date2.Year
+				&& date1.Month == date2.Month
 				&& date1.Day == date2.Day;
 		}
 		Alarm FindNextAlarm()
 		{
-			Alarm[] actualAlarms = 
+			Alarm[] actualAlarms =
 				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).ToArray();
 			return actualAlarms.Min();
 		}
-
-		private void btnHideControls_Click(object sender, EventArgs e)
+		private void SaveAlarmToFile(Alarm alarm)
 		{
-			SetVisibility(tsmiShowControls.Checked = false);
-			
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			try
+			{
+				StreamWriter writer = new StreamWriter("alarmWakeUp.ini");
+				writer.WriteLine(alarm.ToString());
+				writer.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка при сохранении в файл: {ex.Message}");
+			}
 		}
-
+		private void btnHideControls_Click(object sender, EventArgs e) =>
+					SetVisibility(tsmiShowControls.Checked = false);
 		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			if (!TopMost)
 			{
 				this.TopMost = true;
-				this.TopMost = false; 
+				this.TopMost = false;
 			}
 		}
-
 		private void tsmiTopmost_Click(object sender, EventArgs e) =>
 			this.TopMost = tsmiTopmost.Checked;
-
-		private void tsmiShowControls_CheckedChanged(object sender, EventArgs e)
-		{
+		private void tsmiShowControls_CheckedChanged(object sender, EventArgs e) =>
 			SetVisibility((sender as ToolStripMenuItem).Checked);
-			//Sender - это отправитель события(control, который прислал событие).
-			//Если на элемент окна воздействует пользователь при помощи клавиатуры и мыши,
-			//этот control отправляет событие своему родителю, 
-			//а родитель может обрабатывать, или не обрабатывать это событие.
-		}
-
-		private void tsmiShowDate_CheckedChanged(object sender, EventArgs e) =>		
+		//Sender - это отправитель события(control, который прислал событие).
+		//Если на элемент окна воздействует пользователь при помощи клавиатуры и мыши,
+		//этот control отправляет событие своему родителю, 
+		//а родитель может обрабатывать, или не обрабатывать это событие.
+		private void tsmiShowDate_CheckedChanged(object sender, EventArgs e) =>
 			cbShowDate.Checked = tsmiShowDate.Checked;
-
 		private void cbShowDate_CheckedChanged(object sender, EventArgs e) =>
 			tsmiShowDate.Checked = cbShowDate.Checked;
-
 		private void tsmiShowWeekDay_CheckedChanged(object sender, EventArgs e) =>
 			cbShowWeekDay.Checked = tsmiShowWeekDay.Checked;
-
 		private void cbShowWeekDay_CheckedChanged(object sender, EventArgs e) =>
 			tsmiShowWeekDay.Checked = cbShowWeekDay.Checked;
-
 		private void tsmiQuit_Click(object sender, EventArgs e) => this.Close();
-
 		private void tsmiForegroundColor_Click(object sender, EventArgs e)
 		{
 			DialogResult result = foregroundColorDialog.ShowDialog();
 			if (result == DialogResult.OK)
 				labelTime.ForeColor = foregroundColorDialog.Color;
 		}
-
 		private void tsmiBackgroundColor_Click(object sender, EventArgs e)
 		{
 			DialogResult result = backgroundColorDialog.ShowDialog();
 			if (result == DialogResult.OK)
 				labelTime.BackColor = backgroundColorDialog.Color;
 		}
-
 		private void tsmiFont_Click(object sender, EventArgs e)
 		{
 			fontDialog.Location = new Point
@@ -216,24 +213,21 @@ namespace Clock
 				);
 			fontDialog.Font = labelTime.Font;
 			DialogResult result = fontDialog.ShowDialog();
-			if(result == DialogResult.OK)
+			if (result == DialogResult.OK)
 				labelTime.Font = fontDialog.Font;
 		}
-
 		private void tsmiAutoStart_CheckedChanged(object sender, EventArgs e)
 		{
 			string key_name = "ClockPV_521";
 			RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-			if(tsmiAutoStart.Checked) rk.SetValue(key_name, Application.ExecutablePath);
+			if (tsmiAutoStart.Checked) rk.SetValue(key_name, Application.ExecutablePath);
 			else rk.DeleteValue(key_name, false);
 			rk.Dispose();
 		}
-
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SaveSettings();
 		}
-
 		private void tsmiAlarms_Click(object sender, EventArgs e)
 		{
 			alarms.Location = new Point
@@ -241,14 +235,9 @@ namespace Clock
 					this.Location.X - alarms.Width - 10,
 					this.Location.Y
 				);
+			Save_Load.LoadAlarm("Alarm.ini");
 			alarms.ShowDialog();
 		}
-
-		private void tsmiShowConsole_Click(object sender, EventArgs e)
-		{
-
-		}
-
 		private void tsmiShowConsole_CheckedChanged(object sender, EventArgs e)
 		{
 			if ((sender as ToolStripMenuItem).Checked) AllocConsole();
@@ -257,5 +246,8 @@ namespace Clock
 		public static extern void AllocConsole();
 		[DllImport("kernel32.dll")]
 		public static extern void FreeConsole();
+
+
+		//Process.Start("powershell", "-File update_task.ps1");
 	}
 }

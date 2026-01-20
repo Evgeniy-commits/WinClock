@@ -14,7 +14,22 @@ namespace Clock
 		public TimeSpan Time { get; set; }
 		public Week Days { get; set; }
 		public string Filename { get; set; }
-		public Alarm() {}
+		public Alarm() { }
+		public Alarm(string data)
+		{
+			string[] value = data.Split('\t');
+			int j = 0;
+			if (DateTime.TryParse(value[j], out DateTime result))
+				Date = DateTime.Parse(value[j++]);
+			else
+			{
+				Date = DateTime.MaxValue;
+				j++;
+			}
+			Time = TimeSpan.Parse(value[j++]);
+			Days = new Week(Week.ParseDays(value[j++]));
+			Filename = value[j++];
+		}
 		public Alarm(Alarm other)
 		{
 			this.Date = other.Date;
@@ -28,7 +43,6 @@ namespace Clock
 		}
 		public override string ToString()
 		{
-			//return $"{Date}, {Time}, {Days.ToString()}, {Filename}";
 			string info = "";
 			info += Date != DateTime.MaxValue ? Date.ToString("yyyy.MM.dd") : "Каждый день";
 			info += $"\t{DateTime.Today.Add(Time).ToString("HH:mm:ss")}";
@@ -36,5 +50,6 @@ namespace Clock
 			info += $"\t {Filename.Split('\\').Last()}";
 			return info;
 		}
+		
 	}
 }

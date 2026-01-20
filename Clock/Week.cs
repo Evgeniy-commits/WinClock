@@ -39,5 +39,23 @@ namespace Clock
 			}
   			return days;
 		}
+		public static byte ParseDays(string Days)
+		{
+			string[] days = Days.Split(',');
+			byte daymask = 0;
+			foreach (string day in days)
+			{
+				string editstr = day.Trim();
+				for (int i = 0; i < NAMES.Length; i++)
+				{
+					if (editstr == NAMES[i])
+					{
+						daymask |= (byte)(1 << i);
+						break;
+					}
+				}
+			}
+			return daymask;
+		}
 	}
 }

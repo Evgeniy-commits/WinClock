@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Save_Load.cs" />
     <Compile Include="Week.cs" />
     <EmbeddedResource Include="AlarmDialog.resx">
       <DependentUpon>AlarmDialog.cs</DependentUpon>
