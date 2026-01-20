@@ -38,8 +38,9 @@ namespace Clock
 			foregroundColorDialog = new ColorDialog();
 			backgroundColorDialog = new ColorDialog();
 			alarms = new AlarmsForm();
-			alarm = null;
+			//alarm = null;
 			LoadSettings();
+			alarms.List.Items.AddRange(Save_Load.LoadAlarm("Alarm.ini").ToArray());
 		}
 		void SetVisibility(bool visible)
 		{
@@ -133,11 +134,9 @@ namespace Clock
 				&& alarm.Time.Seconds == DateTime.Now.Second
 				)
 				MessageBox.Show(alarm.ToString());
-			//Alarm alarmWakeUp = FindNextAlarm();
-			//SaveAlarmToFile(alarmWakeUp);
-			//System.Diagnostics.Process.Start("notepad", "alarmWakeUp.ini");
-			if (DateTime.Now.Second % 5 == 0) alarm = FindNextAlarm();
+			if (DateTime.Now.Second % 10 == 0) alarm = FindNextAlarm();
 			notifyIcon.Text = labelTime.Text;
+			SaveAlarmToFile(alarm);
 		}
 		bool CompareDates(DateTime date1, DateTime date2)
 		{
@@ -147,18 +146,24 @@ namespace Clock
 		}
 		Alarm FindNextAlarm()
 		{
-			Alarm[] actualAlarms =
-				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).ToArray();
-			return actualAlarms.Min();
+			Alarm actualAlarms =
+				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).OrderBy(a => a.Time).FirstOrDefault();
+			//SaveAlarmToFile(actualAlarms);
+			return actualAlarms;
 		}
 		private void SaveAlarmToFile(Alarm alarm)
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
 			try
 			{
-				StreamWriter writer = new StreamWriter("alarmWakeUp.ini");
-				writer.WriteLine(alarm.ToString());
-				writer.Close();
+				if (alarm != null)
+				{
+					StreamWriter writer = new StreamWriter("alarmWakeUp.ini");
+					DateTime? nextAlarm = alarm.NextDate(DateTime.Now);
+					writer.WriteLine(nextAlarm.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+					//System.Diagnostics.Process.Start("notepad", "alarmWakeUp.ini");
+					writer.Close();
+				}
 			}
 			catch (Exception ex)
 			{

@@ -37,7 +37,7 @@ namespace Clock
 				byte day = (byte)(1 << i);
 				if ((this.days & day) != 0) days += $"{NAMES[i]},";
 			}
-  			return days;
+			return days;
 		}
 		public static byte ParseDays(string Days)
 		{

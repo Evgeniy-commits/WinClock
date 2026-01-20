@@ -17,7 +17,6 @@ namespace Clock
 		public AlarmsForm()
 		{
 			InitializeComponent();
-			listBoxAlarms.Items.AddRange(Save_Load.LoadAlarm("Alarm.ini").ToArray());
 		}
 
 		private void buttonAdd_Click(object sender, EventArgs e)

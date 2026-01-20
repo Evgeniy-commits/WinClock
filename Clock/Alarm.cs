@@ -50,6 +50,49 @@ namespace Clock
 			info += $"\t {Filename.Split('\\').Last()}";
 			return info;
 		}
-		
+
+
+		public DateTime? NextDate(DateTime now)
+		{
+			if (Date != DateTime.MaxValue)
+			{
+				DateTime next = Date.Date.Add(Time);
+				if (next > now) return next;
+			}
+
+			// 2. Повторяющийся будильник (по дням недели)
+			//if (Days == Days.None) return null; // Нет активных дней
+
+			DateTime? nextDate = null;
+						
+			for (int i = 0; i < 7; i++)
+			{
+				DayOfWeek day = (DayOfWeek)i;
+				if (Days.Contains((byte)day))
+				{
+					// Ищем ближайший день недели, начиная с СЕГОДНЯ
+					DateTime next = GetNextOccurrence(day, now.Date);
+
+					// Если сегодня, но время уже прошло — берём следующий раз
+					if (next == now.Date && next.Add(Time) <= now)
+					{
+						next = GetNextOccurrence(day, next.AddDays(1));
+					}
+
+					DateTime candidateDateTime = next.Date.Add(Time);
+
+					if (!nextDate.HasValue || candidateDateTime < nextDate.Value)
+						nextDate = candidateDateTime;
+				}
+			}
+
+			return nextDate;
+		}
+		private DateTime GetNextOccurrence(DayOfWeek targetDay, DateTime startDate)
+		{
+			int daysToAdd = ((int)targetDay - (int)startDate.DayOfWeek + 7) % 7;
+			return startDate.AddDays(daysToAdd);
+		}
+
 	}
 }
