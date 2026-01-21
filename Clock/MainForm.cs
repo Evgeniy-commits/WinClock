@@ -40,6 +40,7 @@ namespace Clock
 			alarms = new AlarmsForm();
 			alarm = null;
 			LoadSettings();
+			axWindowsMediaPlayer.Visible = false;
 		}
 		void SetVisibility(bool visible)
 		{
@@ -50,7 +51,7 @@ namespace Clock
 			this.FormBorderStyle = visible ? FormBorderStyle.FixedSingle : FormBorderStyle.None;
 			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
 		}
-		
+
 		void SaveSettings()
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
@@ -134,20 +135,35 @@ namespace Clock
 				&& alarm.Time.Minutes == DateTime.Now.Minute
 				&& alarm.Time.Seconds == DateTime.Now.Second
 				)
-				MessageBox.Show(alarm.ToString());
-			if(DateTime.Now.Second % 5 == 0) alarm = FindNextAlarm();
-			notifyIcon.Text = labelTime.Text ;
+				PlayAlarm();
+			//MessageBox.Show(alarm.ToString());
+			if (DateTime.Now.Second % 5 == 0) alarm = FindNextAlarm();
+			notifyIcon.Text = labelTime.Text;
 		}
-
+		void PlayAlarm()
+		{
+			axWindowsMediaPlayer.URL = alarm.Filename;
+			axWindowsMediaPlayer.settings.volume = 100;
+			axWindowsMediaPlayer.Ctlcontrols.play();
+			axWindowsMediaPlayer.Visible = true;
+		}
+		void SetPlayerInvisible(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+		{
+			if (
+				axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsMediaEnded ||
+				axWindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsStopped
+				)
+				axWindowsMediaPlayer.Visible = false;
+		}
 		bool CompareDates(DateTime date1, DateTime date2)
 		{
-			return date1.Year == date2.Year 
-				&& date1.Month == date2.Month 
+			return date1.Year == date2.Year
+				&& date1.Month == date2.Month
 				&& date1.Day == date2.Day;
 		}
 		Alarm FindNextAlarm()
 		{
-			Alarm[] actualAlarms = 
+			Alarm[] actualAlarms =
 				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).ToArray();
 			return actualAlarms.Min();
 		}
@@ -155,7 +171,7 @@ namespace Clock
 		private void btnHideControls_Click(object sender, EventArgs e)
 		{
 			SetVisibility(tsmiShowControls.Checked = false);
-			
+
 		}
 
 		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -163,7 +179,7 @@ namespace Clock
 			if (!TopMost)
 			{
 				this.TopMost = true;
-				this.TopMost = false; 
+				this.TopMost = false;
 			}
 		}
 
@@ -179,7 +195,7 @@ namespace Clock
 			//а родитель может обрабатывать, или не обрабатывать это событие.
 		}
 
-		private void tsmiShowDate_CheckedChanged(object sender, EventArgs e) =>		
+		private void tsmiShowDate_CheckedChanged(object sender, EventArgs e) =>
 			cbShowDate.Checked = tsmiShowDate.Checked;
 
 		private void cbShowDate_CheckedChanged(object sender, EventArgs e) =>
@@ -216,7 +232,7 @@ namespace Clock
 				);
 			fontDialog.Font = labelTime.Font;
 			DialogResult result = fontDialog.ShowDialog();
-			if(result == DialogResult.OK)
+			if (result == DialogResult.OK)
 				labelTime.Font = fontDialog.Font;
 		}
 
@@ -224,7 +240,7 @@ namespace Clock
 		{
 			string key_name = "ClockPV_521";
 			RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-			if(tsmiAutoStart.Checked) rk.SetValue(key_name, Application.ExecutablePath);
+			if (tsmiAutoStart.Checked) rk.SetValue(key_name, Application.ExecutablePath);
 			else rk.DeleteValue(key_name, false);
 			rk.Dispose();
 		}
@@ -242,11 +258,6 @@ namespace Clock
 					this.Location.Y
 				);
 			alarms.ShowDialog();
-		}
-
-		private void tsmiShowConsole_Click(object sender, EventArgs e)
-		{
-
 		}
 
 		private void tsmiShowConsole_CheckedChanged(object sender, EventArgs e)
