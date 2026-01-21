@@ -93,7 +93,7 @@ namespace Clock
 			Alarm.Days = new Week
 				(
 					checkBoxUseDate.Checked ? (byte) 0 :
-					clbWeekDays.CheckedIndices.Count == 0 ? (byte)127 :
+					clbWeekDays.CheckedIndices.Count == 0 ? (byte) 127 :
 					GetDaysMask()
 				);
 			Alarm.Filename = labelFilename.Text;
