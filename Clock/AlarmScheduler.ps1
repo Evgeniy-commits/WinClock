@@ -1,7 +1,7 @@
 ﻿
 $configFile = "C:\Users\Admin\source\repos\WinClock\Clock\alarmWakeUp.ini"
 $exePath = "C:\Users\Admin\source\repos\WinClock\Clock\bin\Debug\Clock.exe"
-$taskName = "MyAlarmTask"
+$taskName = "AlarmTask"
 
 # Читаем время из файла (первая строка)
 if (-not (Test-Path $configFile)) {
@@ -27,6 +27,8 @@ catch {
     Write-Output "Ошибка формата даты в файле: $alarmTimeStr"
     exit 1
 }
+# Вычитаем 1 минуту
+    $alarmTime = $alarmTime.AddMinutes(-1)
 
 # Проверяем, не прошло ли время
 $now = Get-Date

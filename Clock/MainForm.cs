@@ -17,6 +17,7 @@ namespace Clock
 {
 	public partial class MainForm : Form
 	{
+		MainForm form;
 		FontDialog fontDialog;
 		ColorDialog foregroundColorDialog;
 		ColorDialog backgroundColorDialog;
@@ -39,7 +40,7 @@ namespace Clock
 			backgroundColorDialog = new ColorDialog();
 			alarms = new AlarmsForm();
 			//alarm = null;
-			LoadSettings();
+			LoadSettings("Settings.ini");
 			alarms.List.Items.AddRange(Save_Load.LoadAlarm("Alarm.ini").ToArray());
 		}
 		void SetVisibility(bool visible)
@@ -51,7 +52,8 @@ namespace Clock
 			this.FormBorderStyle = visible ? FormBorderStyle.FixedSingle : FormBorderStyle.None;
 			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
 		}
-		void SaveSettings()
+
+		void SaveSettings(string filename)
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
 			StreamWriter writer = new StreamWriter("Settings.ini");
@@ -77,12 +79,12 @@ namespace Clock
 
 			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
 		}
-		void LoadSettings()
+		void LoadSettings(string filename)
 		{
 			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
 			try
 			{
-				StreamReader reader = new StreamReader("Settings.ini");
+				StreamReader reader = new StreamReader(filename);
 
 				this.Location = new Point
 					(
@@ -136,7 +138,7 @@ namespace Clock
 				MessageBox.Show(alarm.ToString());
 			if (DateTime.Now.Second % 10 == 0) alarm = FindNextAlarm();
 			notifyIcon.Text = labelTime.Text;
-			SaveAlarmToFile(alarm);
+			Save_Load.SaveAlarmToFile(alarm, "alarmWakeUp.ini");
 		}
 		bool CompareDates(DateTime date1, DateTime date2)
 		{
@@ -148,28 +150,9 @@ namespace Clock
 		{
 			Alarm actualAlarms =
 				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).OrderBy(a => a.Time).FirstOrDefault();
-			//SaveAlarmToFile(actualAlarms);
 			return actualAlarms;
 		}
-		private void SaveAlarmToFile(Alarm alarm)
-		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-			try
-			{
-				if (alarm != null)
-				{
-					StreamWriter writer = new StreamWriter("alarmWakeUp.ini");
-					DateTime? nextAlarm = alarm.NextDate(DateTime.Now);
-					writer.WriteLine(nextAlarm.Value.ToString("yyyy-MM-dd HH:mm:ss"));
-					//System.Diagnostics.Process.Start("notepad", "alarmWakeUp.ini");
-					writer.Close();
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Ошибка при сохранении в файл: {ex.Message}");
-			}
-		}
+		
 		private void btnHideControls_Click(object sender, EventArgs e) =>
 					SetVisibility(tsmiShowControls.Checked = false);
 		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -231,7 +214,7 @@ namespace Clock
 		}
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			SaveSettings();
+			SaveSettings("Settings.ini");
 		}
 		private void tsmiAlarms_Click(object sender, EventArgs e)
 		{

@@ -56,5 +56,25 @@ namespace Clock
 			}
 			return loadAlarm;
 		}
+
+		public static void SaveAlarmToFile(Alarm alarm, string filename)
+		{
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			try
+			{
+				if (alarm != null)
+				{
+					StreamWriter writer = new StreamWriter(filename);
+					DateTime? nextAlarm = alarm.NextDate(DateTime.Now);
+					writer.WriteLine(nextAlarm.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+					//System.Diagnostics.Process.Start("notepad", "alarmWakeUp.ini");
+					writer.Close();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка при сохранении в файл: {ex.Message}");
+			}
+		}
 	}
 }
