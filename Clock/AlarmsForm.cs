@@ -18,7 +18,6 @@ namespace Clock
 		{
 			InitializeComponent();
 		}
-
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
 			AlarmDialog alarmDialog = new AlarmDialog();
@@ -27,7 +26,6 @@ namespace Clock
 				listBoxAlarms.Items.Add(new Alarm(alarmDialog.Alarm));
 			}
 		}
-
 		private void listBoxAlarms_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			if (listBoxAlarms.Items.Count > 0 && listBoxAlarms.SelectedItems != null)
@@ -41,11 +39,9 @@ namespace Clock
 				buttonAdd_Click(sender, e);
 			}
 		}
-
 		private void AlarmsForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			Save_Load.SaveAlarm(listBoxAlarms);
 		}
-		
 	}
 }

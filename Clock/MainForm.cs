@@ -234,8 +234,5 @@ namespace Clock
 		public static extern void AllocConsole();
 		[DllImport("kernel32.dll")]
 		public static extern void FreeConsole();
-
-
-		//Process.Start("powershell", "-File update_task.ps1");
 	}
 }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Clock
 {
 	public class Alarm : IComparable<Alarm>
@@ -60,9 +59,6 @@ namespace Clock
 				if (next > now) return next;
 			}
 
-			// 2. Повторяющийся будильник (по дням недели)
-			//if (Days == Days.None) return null; // Нет активных дней
-
 			DateTime? nextDate = null;
 						
 			for (int i = 0; i < 7; i++)
@@ -93,6 +89,5 @@ namespace Clock
 			int daysToAdd = ((int)targetDay - (int)startDate.DayOfWeek + 7) % 7;
 			return startDate.AddDays(daysToAdd);
 		}
-
 	}
 }

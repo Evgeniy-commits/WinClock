@@ -29,7 +29,6 @@ namespace Clock
 			Alarm = new Alarm();
 			for (int i = 0; i < 7; i++)	clbWeekDays.SetItemChecked(i, true);
 		}
-
 		public AlarmDialog(Alarm alarm) : this()
 		{
 			Alarm = alarm;
@@ -55,19 +54,16 @@ namespace Clock
 				return;
 			}
 		}
-
 		private void checkBoxUseDate_CheckedChanged(object sender, EventArgs e)
 		{
 			dtpDate.Enabled = (sender as CheckBox).Checked;
 			clbWeekDays.Enabled = !dtpDate.Enabled;
 		}
-
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
 			if (fileDialog.ShowDialog() == DialogResult.OK)	
 				labelFilename.Text = fileDialog.FileName;			
 		}
-
 		private void clbWeekDays_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			for (int i = 0; i < clbWeekDays.CheckedItems.Count; i++)
@@ -83,7 +79,6 @@ namespace Clock
 			Console.WriteLine($"Days mask: {days}");
 			Console.WriteLine("\n-------------------------------------\n");
 		}
-
 		byte GetDaysMask()
 		{
 			byte days = 0;
@@ -91,7 +86,6 @@ namespace Clock
 				days |= (byte)(1 << clbWeekDays.CheckedIndices[i]);
 			return days;
 		}
-
 		private void buttonOK_Click(object sender, EventArgs e)
 		{
 			Alarm.Date = checkBoxUseDate.Checked ? dtpDate.Value : DateTime.MaxValue;
