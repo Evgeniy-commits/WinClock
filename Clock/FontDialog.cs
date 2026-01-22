@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Text;
+using CustomFonts;
 
 namespace Clock
 {
@@ -44,20 +45,11 @@ namespace Clock
 
 		void LoadFonts(string extension)
 		{
-			string currentDir = Application.ExecutablePath;
-			Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
-			//MessageBox.Show
-			//	(
-			//		this,
-			//		//currentDir,
-			//		Directory.GetCurrentDirectory(),
-			//		"CurrentDirectory",
-			//		MessageBoxButtons.OK,
-			//		MessageBoxIcon.Information
-			//	);
+			//string currentDir = Application.ExecutablePath;
+			//Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
+			Fonts.LoadFonts(extension);
 
 			string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
-			//comboBoxFont.Items.AddRange(files); //Добавляем все содержимое массива "files" в выпадающий список
 			for (int i = 0; i < files.Length; i++)
 			{
 				comboBoxFont.Items.Add( files[i].Split('\\').Last());

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36717.8 d17.14
+VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clock", "Clock\Clock.csproj", "{510D9A44-5EDE-4576-AC79-805F9EF8C00E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFonts", "CustomFonts\CustomFonts.csproj", "{C9868080-2498-41F9-ADE8-F5599824C41A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{510D9A44-5EDE-4576-AC79-805F9EF8C00E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{510D9A44-5EDE-4576-AC79-805F9EF8C00E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{510D9A44-5EDE-4576-AC79-805F9EF8C00E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9868080-2498-41F9-ADE8-F5599824C41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9868080-2498-41F9-ADE8-F5599824C41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9868080-2498-41F9-ADE8-F5599824C41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9868080-2498-41F9-ADE8-F5599824C41A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -115,5 +115,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomFonts\CustomFonts.csproj">
+      <Project>{c9868080-2498-41f9-ade8-f5599824c41a}</Project>
+      <Name>CustomFonts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
