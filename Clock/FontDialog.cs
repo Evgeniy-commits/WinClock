@@ -60,7 +60,7 @@ namespace Clock
 			//comboBoxFont.Items.AddRange(files); //Добавляем все содержимое массива "files" в выпадающий список
 			for (int i = 0; i < files.Length; i++)
 			{
-				comboBoxFont.Items.Add( files[i].Split('\\').Last());
+				comboBoxFont.Items.Add(files[i].Split('\\').Last());
 			}
 		}
 
