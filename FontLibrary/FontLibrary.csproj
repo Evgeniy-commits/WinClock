@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9868080-2498-41F9-ADE8-F5599824C41A}</ProjectGuid>
+    <ProjectGuid>{3CCEDE97-5D7B-4F69-8AA5-D6A2C2EAA597}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CustomFonts</RootNamespace>
-    <AssemblyName>CustomFonts</AssemblyName>
+    <RootNamespace>FontLibrary</RootNamespace>
+    <AssemblyName>FontLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,43 +42,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts.cs" />
+    <Compile Include="FontLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="1001fonts-crashed-scoreboard-eula.txt" />
-    <EmbeddedResource Include="DIGITAL.TXT" />
-    <EmbeddedResource Include="digital_counter_7_screen.png" />
-    <EmbeddedResource Include="License.txt" />
-    <EmbeddedResource Include="pizzadude.dk License.txt" />
-    <EmbeddedResource Include="readme.txt" />
-    <EmbeddedResource Include="SF Digital Readout Sample.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Crashed Scoreboard.ttf" />
-    <EmbeddedResource Include="digital-7 %28italic%29.ttf" />
-    <EmbeddedResource Include="digital-7 %28mono italic%29.ttf" />
-    <EmbeddedResource Include="digital-7 %28mono%29.ttf" />
-    <EmbeddedResource Include="digital-7.ttf" />
-    <EmbeddedResource Include="DIGITALDREAM.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMFAT.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMFATNARROW.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMFATSKEW.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMFATSKEWNARROW.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMNARROW.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMSKEW.ttf" />
-    <EmbeddedResource Include="DIGITALDREAMSKEWNARROW.ttf" />
-    <EmbeddedResource Include="digital_counter_7.ttf" />
-    <EmbeddedResource Include="digital_counter_7_italic.ttf" />
-    <EmbeddedResource Include="DS-DIGI.TTF" />
-    <EmbeddedResource Include="DS-DIGIB.TTF" />
-    <EmbeddedResource Include="DS-DIGII.TTF" />
-    <EmbeddedResource Include="DS-DIGIT.TTF" />
-    <EmbeddedResource Include="E1234-Italic.ttf" />
-    <EmbeddedResource Include="E1234.ttf" />
-    <EmbeddedResource Include="MOSCOW2024.otf" />
-    <EmbeddedResource Include="ShyFoundry Freeware EULA.pdf" />
-    <EmbeddedResource Include="Terminat.ttf" />
+    <Resource Include="Crashed Scoreboard.ttf" />
+    <Resource Include="digital-7 %28italic%29.ttf" />
+    <Resource Include="digital-7 %28mono italic%29.ttf" />
+    <Resource Include="digital-7 %28mono%29.ttf" />
+    <Resource Include="digital-7.ttf" />
+    <Resource Include="DIGITALDREAM.ttf" />
+    <Resource Include="DIGITALDREAMFAT.ttf" />
+    <Resource Include="DIGITALDREAMFATNARROW.ttf" />
+    <Resource Include="DIGITALDREAMFATSKEW.ttf" />
+    <Resource Include="DIGITALDREAMFATSKEWNARROW.ttf" />
+    <Resource Include="DIGITALDREAMNARROW.ttf" />
+    <Resource Include="DIGITALDREAMSKEW.ttf" />
+    <Resource Include="DIGITALDREAMSKEWNARROW.ttf" />
+    <Resource Include="digital_counter_7.ttf" />
+    <Resource Include="digital_counter_7_italic.ttf" />
+    <Resource Include="DS-DIGI.TTF" />
+    <Resource Include="DS-DIGIB.TTF" />
+    <Resource Include="DS-DIGII.TTF" />
+    <Resource Include="DS-DIGIT.TTF" />
+    <Resource Include="E1234-Italic.ttf" />
+    <Resource Include="E1234.ttf" />
+    <Resource Include="LCD14.otf" />
+    <Resource Include="LCD14Condensed.otf" />
+    <Resource Include="LCD14Italic.otf" />
+    <Resource Include="LCD14ItalicCondensed.otf" />
+    <Resource Include="MOSCOW2024.otf" />
+    <Resource Include="SFDigitalReadout-Heavy.ttf" />
+    <Resource Include="SFDigitalReadout-HeavyObliq.ttf" />
+    <Resource Include="SFDigitalReadout-Light.ttf" />
+    <Resource Include="SFDigitalReadout-LightObliq.ttf" />
+    <Resource Include="SFDigitalReadout-Medium.ttf" />
+    <Resource Include="SFDigitalReadout-MediumObli.ttf" />
+    <Resource Include="Terminat.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

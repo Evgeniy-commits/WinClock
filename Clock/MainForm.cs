@@ -115,6 +115,7 @@ namespace Clock
 		}
 		private void timer_Tick(object sender, EventArgs e)
 		{
+			if (FindNextAlarm() != null) Save_Load.SetTask(FindNextAlarm());
 			labelTime.Text = DateTime.Now.ToString
 				(
 					"hh:mm:ss tt",
@@ -135,10 +136,12 @@ namespace Clock
 				&& alarm.Time.Minutes == DateTime.Now.Minute
 				&& alarm.Time.Seconds == DateTime.Now.Second
 				)
-				MessageBox.Show(alarm.ToString());
-			if (DateTime.Now.Second % 10 == 0) alarm = FindNextAlarm();
+			MessageBox.Show(alarm.ToString());
+			if (DateTime.Now.Second % 10 == 0)
+			{
+				alarm = FindNextAlarm();
+			}
 			notifyIcon.Text = labelTime.Text;
-			Save_Load.SaveAlarmToFile(alarm, "alarmWakeUp.ini");
 		}
 		bool CompareDates(DateTime date1, DateTime date2)
 		{
@@ -149,7 +152,12 @@ namespace Clock
 		Alarm FindNextAlarm()
 		{
 			Alarm actualAlarms =
-				alarms.List.Items.Cast<Alarm>().Where(a => a.Time > DateTime.Now.TimeOfDay).OrderBy(a => a.Time).FirstOrDefault();
+				alarms.List.Items.Cast<Alarm>().Select(a => new {
+					Alarm = a,
+					NextOccurrence = a.Time > DateTime.Now.TimeOfDay
+			? DateTime.Now.Date + a.Time
+			: DateTime.Now.Date.AddDays(1) + a.Time
+				}).Where(a => a.NextOccurrence > DateTime.Now).OrderBy(a => a.NextOccurrence).Select(x => x.Alarm).FirstOrDefault();
 			return actualAlarms;
 		}
 		

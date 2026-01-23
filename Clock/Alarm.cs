@@ -53,33 +53,39 @@ namespace Clock
 
 		public DateTime? NextDate(DateTime now)
 		{
+			// 1. Если задан конкретный Date (одноразовый будильник)
 			if (Date != DateTime.MaxValue)
 			{
 				DateTime next = Date.Date.Add(Time);
-				if (next > now) return next;
+				if (next > now)	return next;
+
+				// Если время уже прошло — ищем следующий возможный (завтра + Time)
+				DateTime tomorrow = now.Date.AddDays(1);
+				DateTime candidate = tomorrow.Add(Time);
+				return candidate > now ? candidate : (DateTime?)null;
 			}
 
+			// 2. Если повторяющийся по дням недели
 			DateTime? nextDate = null;
-						
+
 			for (int i = 0; i < 7; i++)
 			{
 				DayOfWeek day = (DayOfWeek)i;
-				if (Days.Contains((byte)day))
-				{
-					// Ищем ближайший день недели, начиная с СЕГОДНЯ
-					DateTime next = GetNextOccurrence(day, now.Date);
+				if (!Days.Contains((byte)day))
+					continue;
 
-					// Если сегодня, но время уже прошло — берём следующий раз
-					if (next == now.Date && next.Add(Time) <= now)
-					{
-						next = GetNextOccurrence(day, next.AddDays(1));
-					}
+				// Находим следующий день недели от "сейчас"
+				DateTime nextOccurrence = GetNextOccurrence(day, now.Date);
 
-					DateTime candidateDateTime = next.Date.Add(Time);
+				// Если это сегодня, но время уже прошло — берём следующий раз
+				if (nextOccurrence == now.Date && now.TimeOfDay >= Time)
+					nextOccurrence = GetNextOccurrence(day, nextOccurrence.AddDays(1));
 
-					if (!nextDate.HasValue || candidateDateTime < nextDate.Value)
-						nextDate = candidateDateTime;
-				}
+				DateTime candidateDateTime = nextOccurrence.Date.Add(Time);
+
+				// Выбираем ближайший из всех подходящих
+				if (!nextDate.HasValue || candidateDateTime < nextDate.Value)
+					nextDate = candidateDateTime;
 			}
 
 			return nextDate;

@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
-namespace CustomFonts
+namespace FontLibrary
 {
-    public class Fonts
+	public class FontLoader
 	{
 		private static PrivateFontCollection fColl = new PrivateFontCollection();
-		private static Dictionary<string, string> _fontResourceMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		//private static Dictionary<string, string> _fontResourceMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 		private static bool fLoad = false;
 		public static void LoadFonts(string extension)
 		{
@@ -58,11 +59,11 @@ namespace CustomFonts
 
 					fColl.AddMemoryFont(ptr, fontBytes.Length);
 					Marshal.FreeCoTaskMem(ptr);
-					foreach (FontFamily family in fColl.Families)
-					{
-						_fontResourceMap[family.Name] = resourceName;
-					}
-					Console.WriteLine($"Font loaded: {resourceName}");
+					//foreach (FontFamily family in fColl.Families)
+					//{
+					//	_fontResourceMap[family.Name] = resourceName;
+					//}
+					//Console.WriteLine($"Font loaded: {resourceName}");
 				}
 				catch (Exception ex)
 				{

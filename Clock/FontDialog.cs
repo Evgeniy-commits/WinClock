@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Drawing.Text;
-using CustomFonts;
+using FontLibrary;
 
 namespace Clock
 {
@@ -22,8 +24,8 @@ namespace Clock
 		{
 			InitializeComponent();
 			lastChosenIndex = 0;
-			LoadFonts("*.ttf");
-			LoadFonts("*.otf");
+			LoadFonts(".ttf");
+			LoadFonts(".otf");
 			comboBoxFont.SelectedIndex = 1;
 		}
 
@@ -47,12 +49,17 @@ namespace Clock
 		{
 			//string currentDir = Application.ExecutablePath;
 			//Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
-			Fonts.LoadFonts(extension);
+			////Fonts.LoadFonts(extension);
 
-			string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
+			//string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
+			//for (int i = 0; i < files.Length; i++)
+			//{
+			//	comboBoxFont.Items.Add( files[i].Split('\\').Last());
+			//}
+			string[] files = FontLoader.GetLoadedFontNames();
 			for (int i = 0; i < files.Length; i++)
 			{
-				comboBoxFont.Items.Add( files[i].Split('\\').Last());
+				comboBoxFont.Items.Add( files[i]);
 			}
 		}
 
@@ -75,10 +82,11 @@ namespace Clock
 
 		void SetFont()
 		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
-			PrivateFontCollection pfc = new PrivateFontCollection();
-			pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
-			labelExample.Font = new Font(pfc.Families[0], (float)numericUpDownFontSize.Value);
+			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
+			//PrivateFontCollection pfc = new PrivateFontCollection();
+			//pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
+			FontFamily family = FontLoader.GetFontFamily(comboBoxFont.SelectedItem.ToString());
+			labelExample.Font = new Font(family, (float)numericUpDownFontSize.Value);
 		}
 
 		private void buttonOK_Click(object sender, EventArgs e)
