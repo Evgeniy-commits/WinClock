@@ -115,7 +115,7 @@ namespace Clock
 		}
 		private void timer_Tick(object sender, EventArgs e)
 		{
-			if (FindNextAlarm() != null) Save_Load.SetTask(FindNextAlarm());
+			if (alarm != null) Save_Load.SetTask(alarm);
 			labelTime.Text = DateTime.Now.ToString
 				(
 					"hh:mm:ss tt",
@@ -152,12 +152,12 @@ namespace Clock
 		Alarm FindNextAlarm()
 		{
 			Alarm actualAlarms =
-				alarms.List.Items.Cast<Alarm>().Select(a => new {
+				alarms.List.Items.Cast<Alarm>().Select(a => new
+				{
 					Alarm = a,
-					NextOccurrence = a.Time > DateTime.Now.TimeOfDay
-			? DateTime.Now.Date + a.Time
-			: DateTime.Now.Date.AddDays(1) + a.Time
-				}).Where(a => a.NextOccurrence > DateTime.Now).OrderBy(a => a.NextOccurrence).Select(x => x.Alarm).FirstOrDefault();
+					NextOccurrence = a.NextDate(DateTime.Now)
+				})
+			.Where(a => a.NextOccurrence.HasValue && a.NextOccurrence > DateTime.Now).OrderBy(a => a.NextOccurrence.Value).Select(x => x.Alarm).FirstOrDefault();
 			return actualAlarms;
 		}
 		

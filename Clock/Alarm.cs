@@ -60,9 +60,9 @@ namespace Clock
 				if (next > now)	return next;
 
 				// Если время уже прошло — ищем следующий возможный (завтра + Time)
-				DateTime tomorrow = now.Date.AddDays(1);
-				DateTime candidate = tomorrow.Add(Time);
-				return candidate > now ? candidate : (DateTime?)null;
+				//DateTime tomorrow = now.Date.AddDays(1);
+				//DateTime candidate = tomorrow.Add(Time);
+				//return candidate > now ? candidate : (DateTime?)null;
 			}
 
 			// 2. Если повторяющийся по дням недели

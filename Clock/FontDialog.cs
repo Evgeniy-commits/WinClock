@@ -24,9 +24,9 @@ namespace Clock
 		{
 			InitializeComponent();
 			lastChosenIndex = 0;
-			LoadFonts(".ttf");
-			LoadFonts(".otf");
-			//comboBoxFont.SelectedIndex = 1;
+			LoadFonts("*.ttf");
+			LoadFonts("*.otf");
+			comboBoxFont.SelectedIndex = 1;
 		}
 
 		public FontDialog(string font_name, string font_size) : this() 
@@ -47,19 +47,13 @@ namespace Clock
 
 		void LoadFonts(string extension)
 		{
-			//string currentDir = Application.ExecutablePath;
-			//Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
-			////Fonts.LoadFonts(extension);
-
-			//string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
-			//for (int i = 0; i < files.Length; i++)
-			//{
-			//	comboBoxFont.Items.Add( files[i].Split('\\').Last());
-			//}
-			string[] files = FontLoader.GetLoadedFontNames();
+			string currentDir = Application.ExecutablePath;
+			Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
+			string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
+			//comboBoxFont.Items.AddRange(files); //Добавляем все содержимое массива "files" в выпадающий список
 			for (int i = 0; i < files.Length; i++)
 			{
-				comboBoxFont.Items.Add(files[i]);
+				comboBoxFont.Items.Add(files[i].Split('\\').Last());
 			}
 		}
 
@@ -69,67 +63,14 @@ namespace Clock
 			info += $"\nItem:\t{comboBoxFont.SelectedItem}";
 			info += $"\nText:\t{comboBoxFont.SelectedText}";
 			info += $"\nValue:\t{comboBoxFont.SelectedValue}";
-			//MessageBox.Show
-			//	(
-			//		this,
-			//		info,
-			//		"SelectedIndexChanged",
-			//		MessageBoxButtons.OK,
-			//		MessageBoxIcon.Information
-			//	);
 			SetFont();
 		}
 
 		void SetFont()
 		{
-			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
-			
-			
-			PrivateFontCollection pfc = FontLoader.fColl;
+			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
+			PrivateFontCollection pfc = new PrivateFontCollection();
 			pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
-			if (comboBoxFont.SelectedItem == null)
-			{
-				MessageBox.Show("Выберите шрифт из списка!");
-				return;
-			}
-
-			// 2. Получаем строку (с учётом типа элемента)
-			string fontPath = comboBoxFont.SelectedItem.ToString();
-
-			// 3. Проверяем, что строка не пустая
-			if (string.IsNullOrEmpty(fontPath))
-			{
-				MessageBox.Show("Не указан путь к шрифту!");
-				return;
-			}
-
-			// 4. Проверяем существование файла
-			if (!File.Exists(fontPath))
-			{
-				MessageBox.Show($"Файл не найден: {fontPath}\n\n" +
-							  "Убедитесь, что указан полный путь (например, C:\\Fonts\\MyFont.ttf).");
-				return;
-			}
-
-			// 5. Пытаемся загрузить шрифт
-			try
-			{
-				
-
-				// 6. Проверяем, что шрифт действительно добавился
-				if (pfc.Families.Length > 0)
-				{
-					MessageBox.Show($"Шрифт {fontPath} успешно загружен!");
-				}
-				else
-				{
-					MessageBox.Show("Шрифт не удалось загрузить (возможно, файл повреждён).");
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Ошибка при загрузке шрифта: {ex.Message}");
-			}
 			labelExample.Font = new Font(pfc.Families[0], (float)numericUpDownFontSize.Value);
 		}
 
