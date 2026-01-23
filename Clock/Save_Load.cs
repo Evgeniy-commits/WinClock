@@ -105,7 +105,7 @@ namespace Clock
 
 			// 2. Настраиваем триггеры (когда запускать)
 			TimeTrigger trigger = new TimeTrigger(nextAlarm.Value);
-			DateTime triggerTime = nextAlarm.Value.Subtract(TimeSpan.FromMinutes(3));
+			DateTime triggerTime = nextAlarm.Value.Subtract(TimeSpan.FromMinutes(2));
 			TimeTrigger trig = new TimeTrigger(triggerTime);
 			td.Triggers.Add(trig);
 
