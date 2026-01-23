@@ -13,7 +13,7 @@ namespace FontLibrary
 {
 	public class FontLoader
 	{
-		private static PrivateFontCollection fColl = new PrivateFontCollection();
+		public static PrivateFontCollection fColl = new PrivateFontCollection();
 		//private static Dictionary<string, string> _fontResourceMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 		private static bool fLoad = false;
 		public static void LoadFonts(string extension)
@@ -78,15 +78,9 @@ namespace FontLibrary
 				.FirstOrDefault(f => string.Equals(f.Name, fontName, StringComparison.OrdinalIgnoreCase));
 		}
 
-		//public static string[] GetLoadedFontNames()
-		//{
-		//	return fColl.Families.Select(f => f.Name).ToArray();
-		//}
 		public static string[] GetLoadedFontNames()
 		{
-			return fColl.Families
-				.Select(f => f.Name)  // берём только свойство Name у каждого FontFamily
-				.ToArray();           // преобразуем в массив string[]
+			return fColl.Families.Select(f => f.Name).ToArray();
 		}
 	}
 }
