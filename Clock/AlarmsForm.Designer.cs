@@ -60,6 +60,7 @@
 			this.buttonDelete.TabIndex = 2;
 			this.buttonDelete.Text = "Delete";
 			this.buttonDelete.UseVisualStyleBackColor = true;
+			this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
 			// 
 			// AlarmsForm
 			// 

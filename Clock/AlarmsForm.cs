@@ -43,5 +43,10 @@ namespace Clock
 		{
 			Save_Load.SaveAlarm(listBoxAlarms);
 		}
+
+		private void buttonDelete_Click(object sender, EventArgs e)
+		{
+			listBoxAlarms.Items.RemoveAt(listBoxAlarms.SelectedIndex);
+		}
 	}
 }

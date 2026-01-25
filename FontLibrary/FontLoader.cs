@@ -51,7 +51,9 @@ namespace FontLibrary
 					}
 
 					byte[] fontBytes = new byte[stream.Length];
-					stream.Read(fontBytes, 0, fontBytes.Length);
+					int bytesRead = stream.Read(fontBytes, 0, fontBytes.Length);
+					if (bytesRead != fontBytes.Length)
+						throw new IOException("Failed to read entire font file.");
 					stream.Close();
 
 					IntPtr ptr = Marshal.AllocCoTaskMem(fontBytes.Length);

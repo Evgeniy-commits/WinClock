@@ -24,8 +24,8 @@ namespace Clock
 		{
 			InitializeComponent();
 			lastChosenIndex = 0;
-			LoadFonts("*.ttf");
-			LoadFonts("*.otf");
+			LoadFonts(".ttf");
+			//LoadFonts(".otf");
 			comboBoxFont.SelectedIndex = 1;
 		}
 
@@ -45,15 +45,31 @@ namespace Clock
 			numericUpDownFontSize.Value = (decimal)Font.Size;
 		}
 
+		//void LoadFonts(string extension)
+		//{
+		//	string currentDir = Application.ExecutablePath;
+		//	Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
+		//	string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
+		//	//comboBoxFont.Items.AddRange(files); //Добавляем все содержимое массива "files" в выпадающий список
+		//	for (int i = 0; i < files.Length; i++)
+		//	{
+		//		comboBoxFont.Items.Add(files[i].Split('\\').Last());
+		//	}
+		//}
 		void LoadFonts(string extension)
 		{
-			string currentDir = Application.ExecutablePath;
-			Directory.SetCurrentDirectory($"{currentDir}\\..\\..\\..\\Fonts");
-			string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), extension);
-			//comboBoxFont.Items.AddRange(files); //Добавляем все содержимое массива "files" в выпадающий список
-			for (int i = 0; i < files.Length; i++)
+			FontLoader.LoadFonts(extension);
+			//MessageBox.Show($"Загружено шрифтов: {FontLoader.GetLoadedFontNames().Length}");
+			//MessageBox.Show("Доступные шрифты:");
+			//foreach (var name in FontLoader.GetLoadedFontNames())
+			//{
+			//	MessageBox.Show(name);
+			//}
+			string[] files = FontLoader.GetLoadedFontNames();
+			comboBoxFont.Items.Clear();
+			foreach (string fontName in files)
 			{
-				comboBoxFont.Items.Add(files[i].Split('\\').Last());
+				comboBoxFont.Items.Add(fontName);
 			}
 		}
 
@@ -66,12 +82,52 @@ namespace Clock
 			SetFont();
 		}
 
+		//void SetFont()
+		//{
+		//	Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
+		//	PrivateFontCollection pfc = new PrivateFontCollection();
+		//	pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
+		//	labelExample.Font = new Font(pfc.Families[0], (float)numericUpDownFontSize.Value);
+		//}
 		void SetFont()
 		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
-			PrivateFontCollection pfc = new PrivateFontCollection();
-			pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
-			labelExample.Font = new Font(pfc.Families[0], (float)numericUpDownFontSize.Value);
+			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..\\Fonts");
+			//PrivateFontCollection pfc = FontLoader.fColl;
+			//pfc.AddFontFile(comboBoxFont.SelectedItem.ToString());
+			if (comboBoxFont.SelectedItem == null)
+			{
+				MessageBox.Show("Выберите шрифт из списка!");
+				return;
+			}
+
+			string selName = comboBoxFont.SelectedItem.ToString();
+			//MessageBox.Show($"Имя шрифта в Box: {selName}");
+			FontFamily family = FontLoader.GetFontFamily(selName);
+			//MessageBox.Show($"Имя шрифта: {family.Name}");
+			//if (family == null)
+			//{
+			//	MessageBox.Show($"Шрифт '{selName}' не найден!");
+			//	return;
+			//}
+
+
+
+			try
+			{
+				var testFont = new Font(family, (float)numericUpDownFontSize.Value);
+				labelExample.Font = testFont;
+				MessageBox.Show($"Шрифт применён: {testFont.Name}, {testFont.Size}pt");
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Ошибка создания шрифта: {ex.Message}");
+			}
+			if (!family.IsStyleAvailable(FontStyle.Regular))
+			{
+				MessageBox.Show("Шрифт не поддерживает начертание Regular!");
+				return;
+			}
+			labelExample.Font = new Font(family, (float)numericUpDownFontSize.Value);
 		}
 
 		private void buttonOK_Click(object sender, EventArgs e)
