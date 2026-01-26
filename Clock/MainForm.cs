@@ -1,17 +1,20 @@
-﻿using Microsoft.Win32;
+﻿using Clock.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
+//using static System.Net.WebRequestMethods;
 
 namespace Clock
 {
@@ -22,8 +25,10 @@ namespace Clock
 		ColorDialog backgroundColorDialog;
 		AlarmsForm alarms;
 		Alarm alarm;
+
 		public MainForm()
 		{
+			InitializeSettingsFile();
 			InitializeComponent();
 			this.StartPosition = FormStartPosition.Manual;
 			this.Location = new Point
@@ -52,10 +57,47 @@ namespace Clock
 			this.TransparencyKey = visible ? Color.Empty : this.BackColor;
 		}
 
+		private void InitializeSettingsFile()
+		{
+			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+			string templatePath = @"C:\Users\Admin\source\repos\WinClock\Clock\Settings.ini";
+			
+			string userSettingsPath = Path.Combine(
+				publicDocuments,
+				"BV_521 Production",
+				"ClockPV_521",
+				"Settings.ini"
+			);
+			string folderPath = Path.GetDirectoryName(userSettingsPath);
+			if (!Directory.Exists(folderPath))
+			{
+				// Создаём всю структуру папок (если её нет)
+				Directory.CreateDirectory(folderPath);
+				Debug.WriteLine($"Папка создана: {folderPath}");
+			}
+
+			// Путь к пользовательскому файлу в AppData
+
+			// Если пользовательского файла нет — копируем шаблон
+			if (!File.Exists(userSettingsPath))
+			{
+				File.Copy(templatePath, userSettingsPath);
+			}
+		}
+
 		void SaveSettings()
 		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-			StreamWriter writer = new StreamWriter("Settings.ini");
+			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+
+			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
+			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+			string settingsPath = Path.Combine(
+				publicDocuments,
+				"BV_521 Production",
+				"ClockPV_521",
+				"Settings.ini"
+			);
+			StreamWriter writer = new StreamWriter(settingsPath);
 
 			writer.WriteLine(this.Location.X);
 			writer.WriteLine(this.Location.Y);
@@ -75,16 +117,23 @@ namespace Clock
 			writer.WriteLine(labelTime.Font.Size);
 
 			writer.Close();
-
-			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
 		}
 
 		void LoadSettings()
 		{
-			Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+			//// Теперь читаем настройки
+			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+			string settingsPath = Path.Combine(
+				publicDocuments,
+				"BV_521 Production",
+				"ClockPV_521",
+				"Settings.ini"
+			);
+
+			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
 			try
 			{
-				StreamReader reader = new StreamReader("Settings.ini");
+				StreamReader reader = new StreamReader(settingsPath);
 
 				this.Location = new Point
 					(
