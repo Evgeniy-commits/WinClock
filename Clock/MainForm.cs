@@ -1,4 +1,5 @@
-﻿using Clock.Properties;
+﻿using Clock;
+using Clock.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
+
 //using static System.Net.WebRequestMethods;
 
 namespace Clock
@@ -28,7 +32,7 @@ namespace Clock
 
 		public MainForm()
 		{
-			InitializeSettingsFile();
+			//InitializeSettingsFile();
 			InitializeComponent();
 			this.StartPosition = FormStartPosition.Manual;
 			this.Location = new Point
@@ -61,7 +65,7 @@ namespace Clock
 		{
 			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
 			string templatePath = @"C:\Users\Admin\source\repos\WinClock\Clock\Settings.ini";
-			
+
 			string userSettingsPath = Path.Combine(
 				publicDocuments,
 				"BV_521 Production",
@@ -88,45 +92,56 @@ namespace Clock
 		void SaveSettings()
 		{
 			//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
-
 			//System.Diagnostics.Process.Start("notepad", "Settings.ini");
-			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+			string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 			string settingsPath = Path.Combine(
-				publicDocuments,
-				"BV_521 Production",
-				"ClockPV_521",
+				programFiles,
+				"BV_521",
+				"Clock",
+				"bin",
+				"Debug",
 				"Settings.ini"
 			);
-			StreamWriter writer = new StreamWriter(settingsPath);
+			try
+			{
 
-			writer.WriteLine(this.Location.X);
-			writer.WriteLine(this.Location.Y);
+				StreamWriter writer = new StreamWriter(settingsPath);
 
-			writer.WriteLine(tsmiTopmost.Checked);
-			writer.WriteLine(tsmiShowControls.Checked);
-			writer.WriteLine(tsmiShowConsole.Checked);
+				writer.WriteLine(this.Location.X);
+				writer.WriteLine(this.Location.Y);
 
-			writer.WriteLine(tsmiShowDate.Checked);
-			writer.WriteLine(tsmiShowWeekDay.Checked);
-			writer.WriteLine(tsmiAutoStart.Checked);
+				writer.WriteLine(tsmiTopmost.Checked);
+				writer.WriteLine(tsmiShowControls.Checked);
+				writer.WriteLine(tsmiShowConsole.Checked);
 
-			writer.WriteLine(labelTime.BackColor.ToArgb());
-			writer.WriteLine(labelTime.ForeColor.ToArgb());
+				writer.WriteLine(tsmiShowDate.Checked);
+				writer.WriteLine(tsmiShowWeekDay.Checked);
+				writer.WriteLine(tsmiAutoStart.Checked);
 
-			writer.WriteLine(fontDialog.Filename);
-			writer.WriteLine(labelTime.Font.Size);
+				writer.WriteLine(labelTime.BackColor.ToArgb());
+				writer.WriteLine(labelTime.ForeColor.ToArgb());
 
-			writer.Close();
+				writer.WriteLine(fontDialog.Filename);
+				writer.WriteLine(labelTime.Font.Size);
+
+				writer.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(this, ex.Message, "Нет прав", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
 		}
 
 		void LoadSettings()
 		{
-			//// Теперь читаем настройки
-			string publicDocuments = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+			/// Теперь читаем настройки
+			string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 			string settingsPath = Path.Combine(
-				publicDocuments,
-				"BV_521 Production",
-				"ClockPV_521",
+				programFiles,
+				"BV_521",
+				"Clock",
+				"bin",
+				"Debug",
 				"Settings.ini"
 			);
 
@@ -319,3 +334,148 @@ namespace Clock
 		public static extern void FreeConsole();
 	}
 }
+
+
+//void SaveSettings()
+//{
+//	//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+//	//System.Diagnostics.Process.Start("notepad", "Settings.ini");
+//	FileSecurity originalSecurity = null;
+//	string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+//	string settingsPath = Path.Combine(
+//		programFiles,
+//		"BV_521",
+//		"Clock",
+//		"bin",
+//		"Debug",
+//		"Settings.ini"
+//	);
+//	try
+//	{
+
+//		if (File.Exists(settingsPath))
+//			originalSecurity = File.GetAccessControl(settingsPath);
+//		else
+//			originalSecurity = new FileSecurity();
+
+//		GrantWriteAccess(settingsPath);
+//		StreamWriter writer = new StreamWriter(settingsPath);
+
+//		writer.WriteLine(this.Location.X);
+//		writer.WriteLine(this.Location.Y);
+
+//		writer.WriteLine(tsmiTopmost.Checked);
+//		writer.WriteLine(tsmiShowControls.Checked);
+//		writer.WriteLine(tsmiShowConsole.Checked);
+
+//		writer.WriteLine(tsmiShowDate.Checked);
+//		writer.WriteLine(tsmiShowWeekDay.Checked);
+//		writer.WriteLine(tsmiAutoStart.Checked);
+
+//		writer.WriteLine(labelTime.BackColor.ToArgb());
+//		writer.WriteLine(labelTime.ForeColor.ToArgb());
+
+//		writer.WriteLine(fontDialog.Filename);
+//		writer.WriteLine(labelTime.Font.Size);
+
+//		writer.Close();
+//	}
+//	catch (Exception ex)
+//	{
+//		MessageBox.Show(this, ex.Message, "Нет прав", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+//	}
+//	finally
+//	{
+//		if (originalSecurity != null && File.Exists(settingsPath))
+//			File.SetAccessControl(settingsPath, originalSecurity);
+//	}
+//}
+
+//void LoadSettings()
+//{
+//	FileSecurity originalSecurity = null;
+
+//	//// Теперь читаем настройки
+//	string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+//	string settingsPath = Path.Combine(
+//		programFiles,
+//		"BV_521",
+//		"Clock",
+//		"bin",
+//		"Debug",
+//		"Settings.ini"
+//	);
+
+//	//Directory.SetCurrentDirectory($"{Application.ExecutablePath}\\..\\..\\..");
+//	try
+//	{
+//		originalSecurity = File.GetAccessControl(settingsPath);
+//		GrantReadAccess(settingsPath);
+//		StreamReader reader = new StreamReader(settingsPath);
+
+//		this.Location = new Point
+//			(
+//				Convert.ToInt32(reader.ReadLine()),
+//				Convert.ToInt32(reader.ReadLine())
+//			);
+
+//		this.TopMost = tsmiTopmost.Checked = bool.Parse(reader.ReadLine());
+//		tsmiShowControls.Checked = bool.Parse(reader.ReadLine());
+//		tsmiShowConsole.Checked = bool.Parse(reader.ReadLine());
+
+//		tsmiShowDate.Checked = bool.Parse(reader.ReadLine());
+//		tsmiShowWeekDay.Checked = bool.Parse(reader.ReadLine());
+//		tsmiAutoStart.Checked = bool.Parse(reader.ReadLine());
+
+//		labelTime.BackColor = backgroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(reader.ReadLine()));
+//		labelTime.ForeColor = foregroundColorDialog.Color = Color.FromArgb(Convert.ToInt32(reader.ReadLine()));
+
+//		fontDialog = new FontDialog(reader.ReadLine(), reader.ReadLine());
+//		labelTime.Font = fontDialog.Font;
+
+//		reader.Close();
+//	}
+//	catch (Exception ex)
+//	{
+//		MessageBox.Show(this, ex.Message, "Settings issue", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+//	}
+//	finally
+//	{
+//		if (originalSecurity != null)
+//			File.SetAccessControl(settingsPath, originalSecurity);
+//	}
+//}
+
+//void GrantReadAccess(string settingsPath)
+//{
+//	var userSid = WindowsIdentity.GetCurrent().User;
+//	var rule = new FileSystemAccessRule(
+//		userSid,
+//		FileSystemRights.Read,
+//		InheritanceFlags.None,
+//		PropagationFlags.NoPropagateInherit,
+//		AccessControlType.Allow
+//	);
+
+//	var fileSecurity = File.GetAccessControl(settingsPath);
+//	fileSecurity.AddAccessRule(rule);
+//	File.SetAccessControl(settingsPath, fileSecurity);
+//}
+//void GrantWriteAccess(string settingsPath)
+//{
+//	var userSid = WindowsIdentity.GetCurrent().User;
+//	var rule = new FileSystemAccessRule(
+//		userSid,
+//		FileSystemRights.Write,
+//		InheritanceFlags.None,
+//		PropagationFlags.NoPropagateInherit,
+//		AccessControlType.Allow
+//	);
+
+//	var fileSecurity = File.Exists(settingsPath)
+//		? File.GetAccessControl(settingsPath)
+//		: new FileSecurity();
+
+//	fileSecurity.AddAccessRule(rule);
+//	File.SetAccessControl(settingsPath, fileSecurity);
+//}
